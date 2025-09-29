@@ -1,2 +1,3 @@
 # hehehe
 hihihi
+git --version
