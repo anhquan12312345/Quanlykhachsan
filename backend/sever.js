@@ -2,6 +2,7 @@
 const express = require('express'); 
 const sql = require('mssql'); 
 const cors = require('cors'); 
+require('dotenv').config();
 
 // --- Bước 2: Tạo máy chủ express ---
 const app = express();
@@ -13,13 +14,13 @@ app.use(express.json());
 
 // --- Bước 4: Cấu hình kết nối SQL Server ---
 const dbConfig = {
-    user: 'Nhom11App', 
-    password: 'nhom11@123',
-    server: 'localhost\\SQLEXPRESS', 
-    database: 'KhachSanNhom11', 
-    options: {
-        encrypt: false, 
-        trustServerCertificate: true, 
+    user: process.env.DB_USER, 
+    password: process.env.DB_PASSWORD,
+    server: process.env.DB_SERVER, 
+    database: process.env.DB_NAME, 
+    options: {
+        encrypt: false, 
+        trustServerCertificate: true, 
     }
 };
 
