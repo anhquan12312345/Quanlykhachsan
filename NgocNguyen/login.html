@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng nhập quản lý khách sạn</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Đăng nhập quản lý khách sạn</h2>
+    <form onsubmit="return loginSuccess(event)">
+      <input type="text" placeholder="Tài khoản" required><br>
+      <input type="password" placeholder="Mật khẩu" required><br>
+      <button type="submit">Đăng nhập</button>
+    </form>
+    <p>Chưa có tài khoản? <a href="register.html">Đăng ký ngay</a></p>
+  </div>
+
+  <script>
+    function loginSuccess(event) {
+      event.preventDefault();
+      alert("Đăng nhập thành công (demo)");
+    }
+  </script>
+</body>
+</html>

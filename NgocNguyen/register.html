@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng ký tài khoản</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Đăng ký tài khoản</h2>
+    <form onsubmit="return registerSuccess(event)">
+      <input type="text" placeholder="Họ và tên" required><br>
+      <input type="email" placeholder="Email" required><br>
+      <input type="tel" placeholder="Số điện thoại" required><br>
+      <input type="date" required><br>
+      <button type="submit">Gửi đăng ký</button>
+    </form>
+    <p>Đã có tài khoản? <a href="login.html">Đăng nhập</a></p>
+  </div>
+
+  <script>
+    function registerSuccess(event) {
+      event.preventDefault();
+      alert("Chủ khách sạn sẽ duyệt và gửi mật khẩu sau.");
+    }
+  </script>
+</body>
+</html>

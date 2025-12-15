@@ -1,0 +1,7 @@
+SELECT TOP (1000) [ID]
+      ,[HoTen]
+      ,[Email]
+      ,[SoDienThoai]
+      ,[MatKhau]
+      ,[MatKhauCap2]
+  FROM [Khachsannhom11].[dbo].[NguoiDung]

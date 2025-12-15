@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Quản Lý Khách Sạn</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Sử dụng font Inter làm font chữ mặc định */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Tùy chỉnh thanh cuộn cho đẹp hơn */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="flex h-screen bg-gray-900 text-white">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-64 bg-gray-900 p-6 flex-col flex-shrink-0 hidden md:flex transition-all duration-300">
+            <h1 class="text-3xl font-bold text-white mb-8">Quản lý</h1>
+            <nav class="flex-1">
+                <ul>
+                    <li class="mb-3">
+                        <a href="#" data-target="view-dashboard" class="nav-link flex items-center p-3 rounded-lg bg-blue-600 text-white transition-colors duration-200">
+                            <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25A2.25 2.25 0 0113.5 8.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                            </svg>
+                            Thông tin chung
+                        </a>
+                    </li>
+                    <li class="mb-3">
+                        <!-- Đã sửa: Thêm class nav-link và data-target -->
+                        <a href="#" data-target="view-rooms" class="nav-link flex items-center p-3 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200">
+                            <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+                            </svg>
+                            Quản lý Phòng
+                        </a>
+                    </li>
+                    <li class="mb-3">
+                        <a href="#" data-target="view-employee" class="nav-link flex items-center p-3 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200">
+                            <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM8.25 9.375a2.625 2.625 0 115.25 0 2.625 2.625 0 01-5.25 0z" />
+                            </svg>
+                            Quản lý Nhân viên
+                        </a>
+                    </li>
+                    <li class="mb-3">
+                        <a href="#" data-target="view-revenue" class="nav-link flex items-center p-3 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200">
+                            <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1.125-1.5M13.5 16.5L12 15m1.5 1.5l-1.125-1.5m6-9l-1.125-1.5M18 7.5l-1.125-1.5M9 7.5l-1.125-1.5M9 7.5L7.875 6" />
+                            </svg>
+                            Thống kê Doanh thu
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="mt-auto">
+                <!-- Đã sửa: Thêm class nav-link và data-target -->
+                <a href="#" data-target="view-settings" class="nav-link flex items-center p-3 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-200">
+                    <svg class="w-6 h-6 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-1.002 1.118-1.002h1.078c.558 0 1.028.46 1.118 1.002l.068.408c.46.275.908.616 1.309.997l.344-.269c.437-.34.99-.304 1.37.09l.764.764c.394.394.43.933.09 1.37l-.269.344c.381.4.722.848.997 1.309l.408.068c.542.09.962.56.962 1.118v1.078c0 .558-.46.988-1.002 1.118l-.408.068c-.275.46-.616.908-.997 1.309l.269.344c.34.437.304.99-.09 1.37l-.764.764a.99.99 0 01-1.37.09l-.344-.269c-.4.381-.848.722-1.309.997l-.068.408c-.09.542-.56.962-1.118.962h-1.078c-.558 0-1.028-.46-1.118-.962l-.068-.408a6.51 6.51 0 01-1.309-.997l-.344.269a.99.99 0 01-1.37-.09l-.764-.764a.99.99 0 01-.09-1.37l.269-.344a6.51 6.51 0 01-.997-1.309l-.408-.068c-.542-.09-1.002-.56-1.002-1.118v-1.078c0-.558.46-1.028 1.002-1.118l.408-.068c.275-.46.616-.908.997-1.309l-.269-.344a.99.99 0 01.09-1.37l.764-.764c.394-.394.933-.43 1.37-.09l.344.269c.4-.381.848.722 1.309.997l.068-.408zM12 15a3 3 0 100-6 3 3 0 000 6z" />
+                    </svg>
+                    Cài đặt
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <div class="flex-1 flex flex-col h-screen overflow-y-hidden">
+            <!-- Header -->
+            <header class="bg-white text-gray-800 shadow-md p-4 flex items-center justify-between">
+                <button id="menu-button" class="md:hidden text-gray-600 hover:text-gray-900">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+                
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-3xl hover:text-Black-800">Khách sạn Nhóm 11</h1>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-500 hover:text-gray-800">
+                        <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                        </svg>
+                    </button>
+                    <img src="https://placehold.co/40x40/E0E7FF/4F46E5?text=QL" alt="Avatar" class="w-10 h-10 rounded-full border-2 border-blue-500">
+                </div>
+            </header>
+
+            <!-- Main Content Area (Scrollable) -->
+            <main class="flex-1 p-6 overflow-y-auto">
+                
+                <!-- View: Thông tin chung (Dashboard) -->
+                <div id="view-dashboard" class="content-view">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Chào mừng trở lại, Quản lý!</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex items-center space-x-4 transform hover:scale-105 transition-transform duration-300">
+                            <div class="p-3 bg-green-100 rounded-full">
+                                <svg class="w-6 h-6 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Phòng Trống</p>
+                                <!-- Đã sửa: Thêm ID để cập nhật động -->
+                                <p class="text-3xl font-bold text-gray-900" id="db-available">0</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex items-center space-x-4 transform hover:scale-105 transition-transform duration-300">
+                            <div class="p-3 bg-red-100 rounded-full">
+                                <svg class="w-6 h-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Phòng Có Khách</p>
+                                <!-- Đã sửa: Thêm ID để cập nhật động -->
+                                <p class="text-3xl font-bold text-gray-900" id="db-occupied">0</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex items-center space-x-4 transform hover:scale-105 transition-transform duration-300">
+                            <div class="p-3 bg-blue-100 rounded-full">
+                                <svg class="w-6 h-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Đang Dọn Dẹp</p>
+                                <!-- Đã sửa: Thêm ID để cập nhật động -->
+                                <p class="text-3xl font-bold text-gray-900" id="db-cleaning">0</p>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg flex items-center space-x-4 transform hover:scale-105 transition-transform duration-300">
+                            <div class="p-3 bg-yellow-100 rounded-full">
+                                <svg class="w-6 h-6 text-yellow-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Tổng số phòng</p>
+                                <!-- Đã sửa: Thêm ID để cập nhật động -->
+                                <p class="text-3xl font-bold text-gray-900" id="db-total">0</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Các phần còn lại của Dashboard... -->
+                     <div class="bg-white p-6 rounded-2xl shadow-lg mb-8">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Thống kê Doanh thu (Tháng này)</h3>
+                        <div class="flex items-end h-64 bg-gray-50 p-4 rounded-lg space-x-4">
+                            <!-- Đây là biểu đồ tĩnh, bạn có thể thay thế bằng thư viện biểu đồ nếu muốn -->
+                            <div class="flex-1 text-center flex flex-col justify-end items-center"><div class="w-1/2 bg-blue-500 rounded-t-lg" style="height: 60%"></div><span class="text-xs text-gray-500 mt-1">Tuần 1</span></div>
+                            <div class="flex-1 text-center flex flex-col justify-end items-center"><div class="w-1/2 bg-blue-500 rounded-t-lg" style="height: 80%"></div><span class="text-xs text-gray-500 mt-1">Tuần 2</span></div>
+                            <div class="flex-1 text-center flex flex-col justify-end items-center"><div class="w-1/2 bg-blue-500 rounded-t-lg" style="height: 50%"></div><span class="text-xs text-gray-500 mt-1">Tuần 3</span></div>
+                            <div class="flex-1 text-center flex flex-col justify-end items-center"><div class="w-1/2 bg-blue-700 rounded-t-lg" style="height: 90%"></div><span class="text-xs text-gray-500 mt-1">Tuần 4</span></div>
+                            <div class="flex-1 text-center flex flex-col justify-end items-center"><div class="w-1/2 bg-blue-500 rounded-t-lg" style="height: 70%"></div><span class="text-xs text-gray-500 mt-1">Tuần 5</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View: Quản lý Phòng (Nội dung mới) -->
+                <div id="view-rooms" class="content-view hidden">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Quản lý Trạng thái Phòng</h2>
+                    
+                    <!-- Filter bar -->
+                    <div class="mb-6 p-4 bg-white rounded-lg shadow-md">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label for="filter-search" class="block text-sm font-medium text-gray-700">Tìm phòng (theo số)</label>
+                                <input type="text" id="filter-search" placeholder="Nhập số phòng (ví dụ: CD01, DG10)..." class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                            </div>
+                            <div>
+                                <label for="filter-status" class="block text-sm font-medium text-gray-700">Lọc theo trạng thái</label>
+                                <select id="filter-status" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                                    <option value="all">Tất cả trạng thái</option>
+                                    <option value="available">Trống</option>
+                                    <option value="occupied">Có khách</option>
+                                    <option value="cleaning">Đang dọn</option>
+                                    <option value="maintenance">Bảo trì</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="filter-type" class="block text-sm font-medium text-gray-700">Lọc theo loại phòng</label>
+                                <!-- Đã sửa: Cập nhật các loại phòng -->
+                                <select id="filter-type" class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                                    <option value="all">Tất cả loại phòng</option>
+                                    <option value="Cặp đôi">Cặp đôi</option>
+                                    <option value="Đơn tiêu chuẩn">Đơn tiêu chuẩn</option>
+                                    <option value="Deluxe">Deluxe</option>
+                                    <option value="Suite gia đình">Suite gia đình</option>
+                                    <option value="Tổng thống">Tổng thống</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Room Table -->
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Phòng</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Loại phòng</th>
+                                        <!-- Đã thêm: Cột giá phòng -->
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Giá phòng</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Trạng thái</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Khách</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Check-in</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Check-out</th>
+                                        <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="room-table-body" class="bg-white divide-y divide-gray-200 text-gray-800">
+                                    <!-- Dữ liệu phòng sẽ được chèn vào đây bằng JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View: Quản lý Nhân viên -->
+                <div id="view-employee" class="content-view hidden">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Quản lý Nhân viên</h2>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold text-gray-800">Danh sách Nhân viên</h3>
+                            <button class="bg-blue-600 text-white px-5 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2">
+                                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                                <span>Thêm Nhân viên</span>
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Họ tên</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Email</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Số điện thoại</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">CCCD</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Quê quán</th>
+                                        <th scope="col" class="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200 text-gray-800">
+                                    <tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Nguyễn Văn An</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">an.nguyen@example.com</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">0901234567</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">001234567890</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">Hà Nội</td><td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3"></td></tr>
+                                    <tr><td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Trần Thị Bình</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">binh.tran@example.com</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">0912345678</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">002345678901</td><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">TP. Hồ Chí Minh</td><td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3"></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- View: Thống kê Doanh thu -->
+                <div id="view-revenue" class="content-view hidden">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Thống kê Doanh thu</h2>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg">
+                        <p class="text-gray-600">Đây là nơi chứa báo cáo doanh thu chi tiết.</p>
+                    </div>
+                </div>
+                
+                <!-- View: Cài đặt -->
+                <div id="view-settings" class="content-view hidden">
+                    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Cài đặt</h2>
+                    <div class="bg-white p-6 rounded-2xl shadow-lg">
+                        <p class="text-gray-600">Đây là nơi chứa các cài đặt hệ thống.</p>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal Check-in (Lấy từ demo cũ) -->
+    <div id="checkin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300 hidden">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md transform transition-all scale-95 opacity-0 text-gray-800" id="modal-content">
+            <div class="flex justify-between items-center mb-2">
+                <h2 class="text-xl font-semibold">Check-in cho phòng <span id="modal-room-name"></span></h2>
+                <button id="close-modal-btn" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <!-- Đã thêm: Hiển thị giá phòng -->
+            <p class="text-lg text-gray-600 mb-4">Giá: <span id="modal-room-price" class="font-bold text-blue-600"></span> VNĐ/đêm</p>
+            
+            <form id="checkin-form">
+                <input type="hidden" id="modal-room-id">
+                <div class="mb-4">
+                    <label for="guest-name" class="block text-sm font-medium text-gray-700 mb-1">Tên khách hàng</label>
+                    <input type="text" id="guest-name" name="guest-name" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label for="checkin-date" class="block text-sm font-medium text-gray-700 mb-1">Ngày check-in</label>
+                        <input type="date" id="checkin-date" name="checkin-date" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                    </div>
+                    <div>
+                        <label for="checkout-date" class="block text-sm font-medium text-gray-700 mb-1">Ngày check-out</label>
+                        <input type="date" id="checkout-date" name="checkout-date" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                    </div>
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button type="button" id="cancel-modal-btn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">Hủy</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Xác nhận Check-in</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- Phần: Dữ liệu phòng và Logic (Tích hợp) ---
+
+            // Đã sửa: Hàm tạo phòng theo yêu cầu mới
+            function generateInitialRooms() {
+                const rooms = [];
+                const statuses = ['available', 'occupied', 'cleaning', 'maintenance'];
+                const guestNames = ['Nguyễn Văn A', 'Trần Thị B', 'Lê Văn C', 'Phạm Thị D', 'Vũ Văn E', 'Đặng Thị F', 'Hoàng Văn G', 'Bùi Thị H'];
+                
+                const roomConfigs = [
+                    { type: 'Cặp đôi', prefix: 'CD', count: 50, price: 2000000 },
+                    { type: 'Đơn tiêu chuẩn', prefix: 'DG', count: 60, price: 1200000 },
+                    { type: 'Deluxe', prefix: 'DL', count: 50, price: 3000000 },
+                    { type: 'Suite gia đình', prefix: 'GD', count: 20, price: 5000000 },
+                    { type: 'Tổng thống', prefix: 'TT', count: 2, price: 15000000 }
+                ];
+
+                roomConfigs.forEach(config => {
+                    for (let i = 0; i < config.count; i++) {
+                        const roomNum = `${config.prefix}${String(i + 1).padStart(2, '0')}`;
+                        const status = statuses[Math.floor(Math.random() * statuses.length)];
+                        
+                        let guestName = '';
+                        let checkIn = '';
+                        let checkOut = '';
+
+                        if (status === 'occupied') {
+                            guestName = guestNames[Math.floor(Math.random() * guestNames.length)];
+                            checkIn = '2025-11-0' + Math.floor(Math.random() * 5 + 1);
+                            checkOut = '2025-11-0' + Math.floor(Math.random() * 5 + 6);
+                        }
+
+                        rooms.push({
+                            id: roomNum,
+                            type: config.type,
+                            price: config.price,
+                            status: status,
+                            guestName: guestName,
+                            checkIn: checkIn,
+                            checkOut: checkOut
+                        });
+                    }
+                });
+                return rooms;
+            }
+
+            // Đã sửa: Gọi hàm không cần tham số
+            let rooms = generateInitialRooms();
+
+            // Selectors cho các thành phần quản lý phòng
+            const roomTableBody = document.getElementById('room-table-body');
+            const checkinModal = document.getElementById('checkin-modal');
+            const modalContent = document.getElementById('modal-content');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const cancelModalBtn = document.getElementById('cancel-modal-btn');
+            const checkinForm = document.getElementById('checkin-form');
+            const modalRoomName = document.getElementById('modal-room-name');
+            const modalRoomId = document.getElementById('modal-room-id');
+            const modalRoomPrice = document.getElementById('modal-room-price'); // Đã thêm
+            
+            // Selectors cho bộ lọc
+            const filterSearch = document.getElementById('filter-search');
+            const filterStatus = document.getElementById('filter-status');
+            const filterType = document.getElementById('filter-type');
+
+            // --- Helper Functions (Tích hợp) ---
+
+            function getStatusStyles(status) {
+                switch (status) {
+                    case 'available':
+                        return {
+                            badge: 'bg-green-100 text-green-800',
+                            text: 'Trống'
+                        };
+                    case 'occupied':
+                        return {
+                            badge: 'bg-red-100 text-red-800',
+                            text: 'Có khách'
+                        };
+                    case 'cleaning':
+                        return {
+                            badge: 'bg-blue-100 text-blue-800',
+                            text: 'Đang dọn'
+                        };
+                    case 'maintenance':
+                        return {
+                            badge: 'bg-gray-100 text-gray-800',
+                            text: 'Bảo trì'
+                        };
+                    default:
+                        return {
+                            badge: 'bg-gray-100 text-gray-800',
+                            text: 'Không xác định'
+                        };
+                }
+            }
+
+            function getActionButtons(room) {
+                let buttons = '';
+                switch (room.status) {
+                    case 'available':
+                        buttons = `
+                            <button data-action="check-in" data-id="${room.id}" class="px-3 py-1 bg-blue-600 text-white rounded-md text-xs font-medium hover:bg-blue-700">
+                                Check-in
+                            </button>
+                        `;
+                        break;
+                    case 'occupied':
+                        buttons = `
+                            <button data-action="check-out" data-id="${room.id}" class="px-3 py-1 bg-yellow-500 text-white rounded-md text-xs font-medium hover:bg-yellow-600">
+                                Check-out
+                            </button>
+                        `;
+                        break;
+                    case 'cleaning':
+                        buttons = `
+                            <button data-action="finish-cleaning" data-id="${room.id}" class="px-3 py-1 bg-green-600 text-white rounded-md text-xs font-medium hover:bg-green-700">
+                                Hoàn tất dọn
+                            </button>
+                        `;
+                        break;
+                    case 'maintenance':
+                        buttons = `
+                            <button data-action="finish-maintenance" data-id="${room.id}" class="px-3 py-1 bg-gray-600 text-white rounded-md text-xs font-medium hover:bg-gray-700">
+                                Hoàn tất
+                            </button>
+                        `;
+                        break;
+                }
+                
+                // Thêm nút bảo trì nếu phòng không đang bảo trì
+                if (room.status !== 'maintenance') {
+                    buttons += `
+                        <button data-action="maintenance" data-id="${room.id}" class="ml-2 px-3 py-1 bg-gray-200 text-gray-700 rounded-md text-xs font-medium hover:bg-gray-300">
+                            Bảo trì
+                        </button>
+                    `;
+                }
+                 return buttons;
+            }
+
+            // --- Render Functions (Tích hợp và Nâng cấp) ---
+
+            function renderRoomTable() {
+                if (!roomTableBody) return;
+                
+                // Đọc giá trị từ bộ lọc
+                const searchTerm = filterSearch.value.toLowerCase();
+                const statusFilter = filterStatus.value;
+                const typeFilter = filterType.value;
+
+                // Lọc danh sách phòng
+                const filteredRooms = rooms.filter(room => {
+                    const matchesSearch = room.id.toString().toLowerCase().includes(searchTerm);
+                    const matchesStatus = (statusFilter === 'all') || (room.status === statusFilter);
+                    const matchesType = (typeFilter === 'all') || (room.type === typeFilter);
+                    return matchesSearch && matchesStatus && matchesType;
+                });
+
+                // Xóa bảng cũ
+                roomTableBody.innerHTML = ''; 
+                
+                // Render phòng
+                if (filteredRooms.length === 0) {
+                     // Đã sửa: colspan="8"
+                     roomTableBody.innerHTML = `<tr><td colspan="8" class="px-6 py-4 text-center text-gray-500">Không tìm thấy phòng nào.</td></tr>`;
+                     return;
+                }
+
+                filteredRooms.forEach(room => {
+                    const status = getStatusStyles(room.status);
+                    
+                    // Đã sửa: Thêm cột giá phòng
+                    const roomRow = `
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">Phòng ${room.id}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-600">${room.type}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-800 font-medium">${room.price.toLocaleString('vi-VN')} VNĐ</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold ${status.badge}">
+                                    ${status.text}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${room.guestName || 'N/A'}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${room.checkIn || 'N/A'}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${room.checkOut || 'N/A'}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                ${getActionButtons(room)}
+                            </td>
+                        </tr>
+                    `;
+                    roomTableBody.innerHTML += roomRow;
+                });
+            }
+            
+            function updateSummary() {
+                let available = 0, occupied = 0, cleaning = 0;
+
+                rooms.forEach(room => {
+                    if (room.status === 'available') available++;
+                    if (room.status === 'occupied') occupied++;
+                    if (room.status === 'cleaning') cleaning++;
+                });
+
+                // Cập nhật thẻ tóm tắt trên Dashboard
+                document.getElementById('db-total').textContent = rooms.length;
+                document.getElementById('db-available').textContent = available;
+                document.getElementById('db-occupied').textContent = occupied;
+                document.getElementById('db-cleaning').textContent = cleaning;
+            }
+
+            // --- Modal Functions (Tích hợp) ---
+
+            function openModal(roomId) {
+                // Đã sửa: roomId giờ là chuỗi (ví dụ: "CD01")
+                const room = rooms.find(r => r.id === roomId);
+                if (!room) return;
+
+                modalRoomName.textContent = room.id;
+                modalRoomId.value = room.id;
+                modalRoomPrice.textContent = room.price.toLocaleString('vi-VN'); // Đã thêm
+                
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('checkin-date').value = today;
+                document.getElementById('checkout-date').value = ''; // Xóa ngày check-out cũ
+
+                checkinModal.classList.remove('hidden');
+                setTimeout(() => {
+                    checkinModal.classList.add('opacity-100');
+                    modalContent.classList.remove('scale-95', 'opacity-0');
+                    modalContent.classList.add('scale-100', 'opacity-100');
+                }, 10);
+            }
+
+            function closeModal() {
+                modalContent.classList.add('scale-95', 'opacity-0');
+                modalContent.classList.remove('scale-100', 'opacity-100');
+                checkinModal.classList.remove('opacity-100');
+                setTimeout(() => {
+                    checkinModal.classList.add('hidden');
+                    checkinForm.reset(); 
+                }, 300);
+            }
+
+            // --- Event Handlers (Tích hợp) ---
+
+            function handleRoomAction(e) {
+                // Sử dụng closest để bắt sự kiện click trên toàn bộ bảng
+                const button = e.target.closest('button[data-action]');
+                if (!button) return;
+
+                const action = button.dataset.action;
+                // Đã sửa: ID giờ là chuỗi, không cần parseInt
+                const id = button.dataset.id;
+                if (!action || !id) return;
+
+                // Đã sửa: Tìm kiếm bằng ID chuỗi
+                const roomIndex = rooms.findIndex(r => r.id === id);
+                if (roomIndex === -1) return;
+
+                switch (action) {
+                    case 'check-in':
+                        openModal(id);
+                        break;
+                    case 'check-out':
+                        rooms[roomIndex].status = 'cleaning';
+                        rooms[roomIndex].guestName = '';
+                        rooms[roomIndex].checkIn = '';
+                        rooms[roomIndex].checkOut = '';
+                        break;
+                    case 'finish-cleaning':
+                    case 'finish-maintenance':
+                        rooms[roomIndex].status = 'available';
+                        break;
+                    case 'maintenance':
+                        rooms[roomIndex].status = 'maintenance';
+                        rooms[roomIndex].guestName = '';
+                        rooms[roomIndex].checkIn = '';
+                        rooms[roomIndex].checkOut = '';
+                        break;
+                }
+                
+                // Render lại bảng và cập nhật tóm tắt
+                renderRoomTable();
+                updateSummary();
+            }
+            
+            function handleCheckInSubmit(e) {
+                e.preventDefault();
+                // Đã sửa: ID là chuỗi từ value
+                const id = modalRoomId.value;
+                const guestName = document.getElementById('guest-name').value;
+                const checkIn = document.getElementById('checkin-date').value;
+                const checkOut = document.getElementById('checkout-date').value;
+
+                // Đã sửa: Tìm bằng ID chuỗi
+                const roomIndex = rooms.findIndex(r => r.id === id);
+                if (roomIndex !== -1) {
+                    rooms[roomIndex].status = 'occupied';
+                    rooms[roomIndex].guestName = guestName;
+                    rooms[roomIndex].checkIn = checkIn;
+                    rooms[roomIndex].checkOut = checkOut;
+                }
+                
+                closeModal();
+                renderRoomTable();
+                updateSummary();
+            }
+
+            // --- Phần: Logic SPA (Từ template mới) ---
+
+            const menuButton = document.getElementById('menu-button');
+            const sidebar = document.getElementById('sidebar');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentViews = document.querySelectorAll('.content-view');
+
+            menuButton.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('absolute');
+                sidebar.classList.toggle('h-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (event) => {
+                    // CHỈ CHẶN default cho link SPA
+                    // (Link "Quản lý Phòng" cũ là href, giờ đã là data-target)
+                    event.preventDefault(); 
+                    
+                    const targetId = link.getAttribute('data-target');
+                    if (!targetId) return; // Bỏ qua nếu link không có data-target
+                    
+                    // Ẩn tất cả các view
+                    contentViews.forEach(view => {
+                        view.classList.add('hidden');
+                    });
+                    
+                    // Hiển thị view mục tiêu
+                    const targetView = document.getElementById(targetId);
+                    if (targetView) {
+                        targetView.classList.remove('hidden');
+                    }
+                    
+                    // Cập nhật trạng thái "active" cho menu
+                    navLinks.forEach(nav => {
+                        nav.classList.remove('bg-blue-600', 'text-white');
+                        nav.classList.add('text-gray-300', 'hover:bg-gray-700', 'hover:text-white');
+                    });
+                    
+                    // Thêm active cho link vừa nhấp
+                    link.classList.add('bg-blue-600', 'text-white');
+                    link.classList.remove('text-gray-300', 'hover:bg-gray-700', 'hover:text-white');
+                    
+                    // Đóng menu di động
+                    if (!sidebar.classList.contains('hidden') && window.innerWidth < 768) {
+                         sidebar.classList.add('hidden');
+                         sidebar.classList.remove('absolute', 'h-full');
+                    }
+                });
+            });
+
+
+            // --- Initial Setup (Khởi tạo) ---
+
+            // Gán sự kiện cho bảng phòng
+            if(roomTableBody) {
+                roomTableBody.addEventListener('click', handleRoomAction);
+            }
+            
+            // Gán sự kiện cho modal
+            closeModalBtn.addEventListener('click', closeModal);
+            cancelModalBtn.addEventListener('click', closeModal);
+            checkinForm.addEventListener('submit', handleCheckInSubmit);
+            
+            // Gán sự kiện cho bộ lọc
+            filterSearch.addEventListener('input', renderRoomTable);
+            filterStatus.addEventListener('change', renderRoomTable);
+            filterType.addEventListener('change', renderRoomTable);
+
+            // Render lần đầu
+            updateSummary(); // Cập nhật thẻ dashboard
+            renderRoomTable(); // Vẽ bảng phòng (đang bị ẩn)
+        });
+    </script>
+
+</body>
+</html>
+
