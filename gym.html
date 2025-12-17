@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Center - Khách sạn Nhóm 11</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            /* Background chính sử dụng ảnh tòa nhà nhóm 11 */
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('z7336900347700_d8dc5a76de3f9a9be6be0e2f46d8e1ca.jpg'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .content-text {
+            line-height: 1.8;
+            text-align: justify;
+            color: #374151;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-card {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .service-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Hiệu ứng cho ảnh phòng tập chính */
+        .gym-hero-img {
+            width: 100%;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            border: 4px solid white;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+    <header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-sm text-gray-800 shadow-md z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center p-4">
+            <div class="flex items-center space-x-2">
+                <a href="./Trangchu.html" class="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-700"><path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><rect width="18" height="7" x="3" y="8.5" rx="1"/></svg>
+                    <span class="text-2xl font-bold text-blue-700">Khách sạn Nhóm 11</span>
+                </a>
+            </div>
+            <div class="space-x-4 hidden md:block">
+                <a href="./Trangchu.html" class="text-gray-600 font-semibold hover:text-blue-700 transition">Trang chủ</a>
+                <a href="#" class="text-blue-700 font-bold border-b-2 border-blue-700">Fitness Blog</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-32 pb-16 px-4">
+        <article class="max-w-4xl mx-auto article-card rounded-3xl shadow-2xl overflow-hidden p-8 md:p-12">
+            
+            <header class="text-center mb-10">
+                <h1 class="text-3xl md:text-5xl font-extrabold text-blue-900 mb-4 uppercase tracking-tight">
+                    N11 Fitness Center
+                </h1>
+                <p class="text-gray-500 font-medium tracking-widest uppercase">Sức Khỏe & Thịnh Vượng</p>
+                <div class="w-24 h-1 bg-blue-600 mx-auto mt-4 rounded-full"></div>
+            </header>
+
+            <section class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 border-l-4 border-blue-600 pl-4">1. Giới thiệu tổng quan</h2>
+                
+                <img src="2a017b14-0a1a-4461-a55b-f3e3c3dd55af.png" alt="Không gian N11 Fitness hiện đại" class="gym-hero-img">
+
+                <p class="content-text">
+                    Nằm tại tầng cao của khách sạn, <strong>N11 Fitness Center</strong> không chỉ đơn thuần là một phòng tập, mà là một không gian nghệ thuật rèn luyện sức khỏe. Với thiết kế mở nhìn thẳng ra thành phố, quý khách có thể vừa thực hiện các bài tập vừa phóng tầm mắt ngắm nhìn cảnh quan tuyệt đẹp.
+                </p>
+                <p class="content-text">
+                    Mọi trang thiết bị tại đây đều được chọn lọc kỹ lưỡng, đảm bảo mang lại hiệu quả tối ưu cho từng buổi tập của bạn, từ khu vực tạ tự do đến các máy cardio hiện đại nhất.
+                </p>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 border-l-4 border-blue-600 pl-4">2. Dịch vụ cao cấp đi kèm</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-4 bg-white rounded-xl border border-blue-100 shadow-sm hover:shadow-md transition">
+                        <img src="images (2).jpg" alt="Xông hơi" class="service-img">
+                        <h3 class="font-bold text-blue-800">Xông hơi đá muối</h3>
+                        <p class="text-xs text-gray-600 mt-1">Đào thải độc tố và thư giãn cơ bắp sâu.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-blue-100 shadow-sm hover:shadow-md transition">
+                        <img src="licensed-image.jpg" alt="Hồ bơi" class="service-img">
+                        <h3 class="font-bold text-blue-800">Hồ bơi vô cực</h3>
+                        <p class="text-xs text-gray-600 mt-1">Thư giãn trong làn nước mát với view triệu đô.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-blue-100 shadow-sm hover:shadow-md transition">
+                        <img src="images.jpg" alt="Huấn luyện viên" class="service-img">
+                        <h3 class="font-bold text-blue-800">PT cá nhân</h3>
+                        <p class="text-xs text-gray-600 mt-1">Đội ngũ huấn luyện viên chuyên nghiệp kèm 1-1.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-xl border border-blue-100 shadow-sm hover:shadow-md transition">
+                        <img src="images (1).jpg" alt="Chế độ ăn" class="service-img">
+                        <h3 class="font-bold text-blue-800">Dinh dưỡng</h3>
+                        <p class="text-xs text-gray-600 mt-1">Thực đơn đặc biệt dành riêng cho Gymer.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 border-l-4 border-blue-600 pl-4">3. Cảm nhận hội viên</h2>
+                <div class="space-y-4">
+                    <blockquote class="italic text-gray-700 bg-blue-50/40 p-6 rounded-2xl border-l-4 border-blue-300">
+                        "Không gian tập luyện vô cùng sạch sẽ và sang trọng. Tôi cực kỳ thích sự riêng tư và chuyên nghiệp tại đây."
+                        <span class="block font-bold text-blue-800 not-italic mt-2">— Anh Minh Hoàng</span>
+                    </blockquote>
+                    <blockquote class="italic text-gray-700 bg-blue-50/40 p-6 rounded-2xl border-l-4 border-blue-300">
+                        "View thành phố từ phòng tập là điểm nhấn không đâu có được. Một trải nghiệm 5 sao thực thụ."
+                        <span class="block font-bold text-blue-800 not-italic mt-2">— Chị Thu Thủy</span>
+                    </blockquote>
+                </div>
+            </section>
+
+            <footer class="text-center pt-8 border-t border-gray-200">
+                <p class="text-gray-600 mb-6 font-medium">Bạn đã sẵn sàng nâng tầm vóc dáng cùng Nhóm 11 chưa?</p>
+                <button onclick="window.location.href='./Trangchu.html'" class="bg-blue-700 hover:bg-blue-800 text-white font-bold py-4 px-12 rounded-full transition duration-300 shadow-xl transform hover:scale-105">
+                    ĐĂNG KÝ NGAY
+                </button>
+            </footer>
+
+        </article>
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Buffet - Khách sạn Nhóm 11</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+        
+        body {
+            /* Background sử dụng ảnh không gian nhà hàng sang trọng */
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .heading-font { font-family: 'Playfair Display', serif; }
+
+        .content-text {
+            line-height: 1.8;
+            text-align: justify;
+            color: #4b5563;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-card {
+            background-color: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .dish-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+            transition: transform 0.5s ease;
+        }
+
+        .service-card:hover .dish-img {
+            transform: scale(1.05);
+        }
+
+        /* Hiệu ứng cho ảnh bìa món ăn */
+        .hero-food-img {
+            width: 100%;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2.5rem;
+            border: 6px solid white;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+    <header class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md text-gray-800 shadow-lg z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center p-4">
+            <div class="flex items-center space-x-2">
+                <a href="./Trangchu.html" class="flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-600"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
+                    <span class="text-2xl font-bold text-amber-800 tracking-tighter">NHÓM 11 <span class="text-amber-600 font-light">DINING</span></span>
+                </a>
+            </div>
+            <div class="space-x-6 hidden md:block uppercase text-xs font-bold tracking-widest">
+                <a href="./Trangchu.html" class="text-gray-500 hover:text-amber-700 transition">Trang chủ</a>
+                <a href="#" class="text-amber-700 border-b-2 border-amber-700 pb-1">Thực đơn Buffet</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-32 pb-16 px-4">
+        <article class="max-w-5xl mx-auto article-card rounded-[2rem] shadow-2xl overflow-hidden p-8 md:p-16">
+            
+            <header class="text-center mb-12">
+                <span class="text-amber-600 font-bold tracking-[0.3em] uppercase text-sm">Tinh hoa ẩm thực năm châu</span>
+                <h1 class="heading-font text-4xl md:text-6xl text-amber-900 mt-4 mb-6">
+                    N11 Grand Buffet
+                </h1>
+                <div class="w-20 h-1 bg-amber-500 mx-auto rounded-full"></div>
+            </header>
+
+            <section class="mb-16">
+                <h2 class="heading-font text-3xl text-gray-900 mb-8 border-l-8 border-amber-600 pl-5">1. Hành trình mỹ vị</h2>
+                
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Không gian buffet sang trọng" class="hero-food-img">
+
+                <p class="content-text text-lg italic text-center text-gray-500 mb-8">
+                    "Nơi mỗi món ăn là một tác phẩm nghệ thuật, và mỗi thực khách là một tri kỷ."
+                </p>
+                
+                <div class="grid md:grid-cols-2 gap-8 text-gray-600 leading-relaxed">
+                    <p>Tọa lạc tại không gian sang trọng nhất của khách sạn, <strong>N11 Grand Buffet</strong> mang đến trải nghiệm ẩm thực không giới hạn với hơn 200 món ăn tinh túy từ Á sang Âu. Từ quầy hải sản tươi sống đến những lát Steak hảo hạng, tất cả đều được chế biến trực tiếp bởi đội ngũ đầu bếp chuẩn 5 sao.</p>
+                    <p>Không chỉ là bữa ăn, chúng tôi mang đến một không gian kết nối, nơi quý khách có thể vừa thưởng thức mỹ vị, vừa ngắm nhìn ánh đèn lung linh của thành phố về đêm qua lớp kính panorama toàn cảnh.</p>
+                </div>
+            </section>
+
+            <section class="mb-16">
+                <h2 class="heading-font text-3xl text-gray-900 mb-10 border-l-8 border-amber-600 pl-5">2. Các quầy line đặc sắc</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="service-card group bg-amber-50/50 p-4 rounded-2xl hover:bg-white hover:shadow-xl transition-all duration-300 border border-amber-100">
+                        <img src="cac-loai-hai-san-nhap-khau-cao-cap-ban-tai-bach-hoa-xanh-202309222155330791.jpg" alt="Hải sản" class="dish-img">
+                        <h3 class="font-bold text-amber-900 text-lg">Hải Sản Cao Cấp</h3>
+                        <p class="text-xs text-gray-500 mt-2 leading-relaxed">Tôm hùm, cua tuyết và hàu nghệ tươi sống nhập khẩu mỗi ngày.</p>
+                    </div>
+                    <div class="service-card group bg-amber-50/50 p-4 rounded-2xl hover:bg-white hover:shadow-xl transition-all duration-300 border border-amber-100">
+                        <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=400&q=80" alt="Sashimi" class="dish-img">
+                        <h3 class="font-bold text-amber-900 text-lg">Sushi & Sashimi</h3>
+                        <p class="text-xs text-gray-500 mt-2 leading-relaxed">Nghệ thuật trình bày Nhật Bản với cá hồi, cá ngừ chuẩn Sashimi.</p>
+                    </div>
+                    <div class="service-card group bg-amber-50/50 p-4 rounded-2xl hover:bg-white hover:shadow-xl transition-all duration-300 border border-amber-100">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80" alt="BBQ" class="dish-img">
+                        <h3 class="font-bold text-amber-900 text-lg">Steakhouse</h3>
+                        <p class="text-xs text-gray-500 mt-2 leading-relaxed">Bít tết bò Mỹ, cừu nướng sốt vang đỏ phục vụ tại bàn.</p>
+                    </div>
+                    <div class="service-card group bg-amber-50/50 p-4 rounded-2xl hover:bg-white hover:shadow-xl transition-all duration-300 border border-amber-100">
+                        <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=400&q=80" alt="Tráng miệng" class="dish-img">
+                        <h3 class="font-bold text-amber-900 text-lg">Tháp Dessert</h3>
+                        <p class="text-xs text-gray-500 mt-2 leading-relaxed">Hàng chục loại bánh ngọt Pháp và tháp chocolate tan chảy.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-16">
+                <h2 class="heading-font text-3xl text-gray-900 mb-8 border-l-8 border-amber-600 pl-5">3. Khách hàng nói gì?</h2>
+                <div class="space-y-6">
+                    <blockquote class="text-gray-700 bg-amber-50 p-8 rounded-3xl border-r-4 border-amber-400 shadow-sm relative">
+                        <p class="italic text-lg">"Tôi đã đi nhiều nhà hàng buffet tại Sài Gòn nhưng N11 thực sự khác biệt ở độ tươi của hải sản và không gian vô cùng ấm cúng. Rất đáng tiền!"</p>
+                        <span class="block font-bold text-amber-800 not-italic mt-4">— Doanh nhân Nguyễn Thành Nam</span>
+                    </blockquote>
+                    <blockquote class="text-gray-700 bg-amber-50 p-8 rounded-3xl border-r-4 border-amber-400 shadow-sm relative">
+                        <p class="italic text-lg">"Gia đình mình tổ chức sinh nhật ở đây, các bạn nhân viên phục vụ rất nhiệt tình, còn tặng bánh kem bất ngờ nữa. Sẽ quay lại!"</p>
+                        <span class="block font-bold text-amber-800 not-italic mt-4">— Chị Mai Phương</span>
+                    </blockquote>
+                </div>
+            </section>
+
+            <footer class="text-center pt-12 border-t border-gray-100">
+                <p class="text-gray-500 mb-8 font-medium">Đừng bỏ lỡ chương trình "Đi 4 Tặng 1" chỉ có trong tháng này!</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button onclick="window.location.href='./Trangchu.html'" class="bg-amber-700 hover:bg-amber-800 text-white font-bold py-5 px-12 rounded-full transition duration-300 shadow-xl transform hover:-translate-y-1 uppercase tracking-widest text-sm">
+                        ĐẶT BÀN NGAY
+                    </button>
+                    <button class="bg-white border-2 border-amber-700 text-amber-700 font-bold py-5 px-12 rounded-full hover:bg-amber-50 transition duration-300 uppercase tracking-widest text-sm">
+                        XEM MENU CHI TIẾT
+                    </button>
+                </div>
+            </footer>
+
+        </article>
+    </main>
+
+    <div class="text
