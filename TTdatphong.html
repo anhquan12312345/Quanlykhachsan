@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background-image: url('Gemini_Generated_Image_p6w099p6w099p6w0.png'); 
+            background-image: url('/images/Gemini_Generated_Image_p6w099p6w099p6w0.png'); 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -30,9 +30,8 @@
             <div id="userMenu" class="flex items-center space-x-4">
                 <span id="welcomeMessage" class="font-semibold text-gray-700 hidden md:block"></span>    
                 <div class="flex items-center space-x-2"> 
-                    <a href="./trang_dat_phong.html" class="bg-green-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-blue-700 transition-colors"> Đặt phòng mới
+                    <a href="./trang_dat_phong.html" class="bg-green-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-blue-700 transition-colors"> Quay lại
                     </a>
-                    <button id="btnLogout" class="bg-red-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-red-700 transition-colors">Đăng xuất
                     </button>
                 </div>
             </div>
@@ -47,185 +46,147 @@
                     </div>
                 
                 <p id="loadingMessage" class="text-center text-gray-600 text-lg mt-8">Đang tải lịch sử đặt phòng...</p>
-
-            </div>
+    </main> 
+    <div class="mt-10 py-6 border-t border-gray-300 bg-white/80 backdrop-blur-sm text-center">
+        <p class="text-gray-700 font-semibold text-lg">
+            Quý khách muốn hủy phòng xin vui lòng liên hệ SĐT: 
+            <a class="text-red-600 font-bold hover:underline">088999 1111</a>
+        </p>
+        </div>
         </section>
     </main>
 
     <script>
-        const welcomeMessage = document.getElementById('welcomeMessage');
-        const btnLogout = document.getElementById('btnLogout');
-        const bookingsList = document.getElementById('myBookingsList');
-        const loadingMessage = document.getElementById('loadingMessage');
-        let currentUser = null;
-
-        // ----- KHỞI CHẠY KHI TẢI TRANG -----
+        const welcomeMessage = document.getElementById('welcomeMessage'); // Đảm bảo ID này đúng với HTML của bạn
+        const bookingsList = document.getElementById('myBookingsList');   // Đảm bảo ID này đúng với khung chứa danh sách
+        const loadingMessage = document.getElementById('loadingMessage'); // Đảm bảo ID này đúng với dòng thông báo "Đang tải"
+        
+        // --- 1. CHẠY KHI VÀO TRANG ---
         document.addEventListener('DOMContentLoaded', () => {
-            // 1. Kiểm tra đăng nhập
-            currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            const userStr = localStorage.getItem('currentUser');
             
-            if (!currentUser) {
-                alert("Bạn cần đăng nhập để truy cập trang này.");
-                window.location.href = './Trangchu.html';
+            if (!userStr) {
+                alert("Vui lòng đăng nhập!");
+                window.location.href = "Trangchu.html"; // Chuyển về trang chủ nếu chưa đăng nhập
                 return;
             }
-            
-            // 2. Điền thông tin
-            welcomeMessage.textContent = `Chào, ${currentUser.hoTen}`;
-            
-            // 3. Tải lịch sử đặt phòng
-            fetchMyBookings(currentUser.id);
+
+            const currentUser = JSON.parse(userStr);
+
+            // --- SỬA LỖI "UNDEFINED" Ở ĐÂY ---
+            // Code này sẽ tự mò xem Server lưu tên là 'Ten' hay 'hoTen' để lấy cho đúng
+            const userName = currentUser.Ten || currentUser.hoTen || currentUser.name || "Khách hàng";
+            const userId = currentUser.Id || currentUser.id || currentUser.ID;
+
+            // Hiển thị tên (Nếu HTML của bạn có chỗ hiện tên)
+            if (welcomeMessage) welcomeMessage.textContent = `Chào, ${userName}`;
+
+            // Gọi server lấy lịch sử
+            if (userId) {
+                fetchMyBookings(userId);
+            } else {
+                console.error("Lỗi: Không tìm thấy ID người dùng");
+            }
+
+            // Xử lý nút đăng xuất (Nếu có nút ID="btnLogout")
+            const btnLogout = document.getElementById('btnLogout');
+            if (btnLogout) {
+                btnLogout.addEventListener('click', () => {
+                    localStorage.removeItem('currentUser');
+                    window.location.href = "Trangchu.html";
+                });
+            }
         });
 
-        // ----- XỬ LÝ ĐĂNG XUẤT -----
-        btnLogout.addEventListener('click', () => {
-            localStorage.removeItem('currentUser');
-            window.location.href = './Trangchu.html';
-        });
-
-        // ----- HÀM LẤY LỊCH SỬ BOOKING -----
+        // --- 2. HÀM TẢI DỮ LIỆU ---
         async function fetchMyBookings(userId) {
             try {
                 const res = await fetch(`http://localhost:3000/my-bookings/${userId}`);
+                if (!res.ok) throw new Error("Lỗi kết nối Server");
                 
-                if (!res.ok) {
-                    throw new Error("Không thể tải dữ liệu từ server.");
-                }
-
                 const bookings = await res.json();
-
+                
                 if (bookings.length === 0) {
-                    loadingMessage.textContent = "Bạn chưa có đơn đặt phòng nào.";
+                    if(loadingMessage) loadingMessage.textContent = "Bạn chưa có đơn đặt phòng nào.";
                 } else {
-                    loadingMessage.classList.add('hidden'); // Ẩn thông báo tải
-                    displayBookings(bookings);
+                    if(loadingMessage) loadingMessage.style.display = 'none'; // Ẩn chữ đang tải
+                    renderBookings(bookings);
                 }
-
             } catch (err) {
-                loadingMessage.textContent = `Lỗi: ${err.message}`;
+                console.error(err);
+                if(loadingMessage) {
+                    loadingMessage.textContent = "Không thể tải dữ liệu (Kiểm tra lại Server).";
+                    loadingMessage.style.color = "red";
+                }
             }
         }
 
-        // ----- HÀM HIỂN THỊ BOOKING RA MÀN HÌNH -----
-        function displayBookings(bookings) {
-            bookingsList.innerHTML = ""; // Xóa nội dung cũ
+        // --- 3. HÀM HIỂN THỊ DANH SÁCH ---
+// --- 3. HÀM HIỂN THỊ DANH SÁCH (Chỉ xem, không hủy) ---
+function renderBookings(bookings) {
+    if (!bookingsList) return;
+    bookingsList.innerHTML = "";
 
-            bookings.forEach(booking => {
-                // Format lại ngày
-                const checkInDate = new Date(booking.CheckIn).toLocaleDateString('vi-VN');
-                const checkOutDate = new Date(booking.CheckOut).toLocaleDateString('vi-VN');
-                const ngayDat = new Date(booking.NgayDat).toLocaleString('vi-VN');
+    bookings.forEach(item => {
+        // 1. Format ngày
+        const checkIn = new Date(item.CheckIn).toLocaleDateString('vi-VN');
+        const checkOut = new Date(item.CheckOut).toLocaleDateString('vi-VN');
 
-                // Tạo thẻ Card HTML
-                const cardHtml = `
-                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row">
-                        <img src="Gemini_Generated_Image_t0vq2qt0vq2qt0vq.png" alt="Ảnh phòng" class="w-full md:w-1/3 h-48 md:h-auto object-cover">
-                        
-                        <div class="p-6 flex flex-col justify-between w-full">
-                            <div>
-                                <div class="flex justify-between items-start mb-2">
-                                    <h3 class="text-2xl font-semibold text-blue-700">${booking.RoomName}</h3>
-                                   <span class="flex-shrink-0 px-3 py-1 rounded-full text-sm font-medium
-    ${booking.TrangThai === 'Mới' ? 'bg-blue-100 text-blue-800' : 
-    (booking.TrangThai === 'Đã hủy' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800')}">
-    ${booking.TrangThai}
-</span>
-                                </div>
-                                <p class="text-gray-600 mb-1">
-                                    <strong>Nhận phòng:</strong> ${checkInDate}
-                                </p>
-                                <p class="text-gray-600 mb-1">
-                                    <strong>Trả phòng:</strong> ${checkOutDate}
-                                </p>
-                                <p class="text-gray-600 mb-4">
-                                    <strong>Số khách:</strong> ${booking.Guests}
-                                </p>
-                                <p class="text-xs text-gray-500">
-                                    Đã đặt lúc: ${ngayDat}
-                                </p>
-                            </div>
-                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mt-4">
-                                <span class="text-2xl font-bold text-gray-900 mb-3 md:mb-0">${booking.TotalPrice}</span>
-                               <button class="bg-red-600 text-white py-2 px-5 rounded-xl font-semibold hover:bg-red-700 transition-colors ${booking.TrangThai !== 'Mới' ? 'opacity-50 cursor-not-allowed' : ''}" 
-        ${booking.TrangThai !== 'Mới' ? 'disabled' : ''}
-        data-booking-id="${booking.ID}" onclick="handleCancelClick(this)">
-    Hủy phòng
-</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                bookingsList.innerHTML += cardHtml;
+        // 2. Format thời gian đặt
+        let orderTime = 'Vừa xong';
+        if (item.NgayDat) {
+            orderTime = new Date(item.NgayDat).toLocaleString('vi-VN', {
+                hour: '2-digit', minute: '2-digit',
+                day: '2-digit', month: '2-digit', year: 'numeric'
             });
         }
-        // ... (Bên dưới hàm displayBookings)
 
-// ----- HÀM XỬ LÝ KHI CLICK NÚT HỦY PHÒNG -----
-function handleCancelClick(buttonElement) {
-    const bookingId = buttonElement.getAttribute('data-booking-id');
-    
-    // Tìm thẻ DIV cha có class 'bg-white rounded-2xl'
-    const bookingCard = buttonElement.closest('.bg-white.rounded-2xl');
+        // 3. Xử lý trạng thái
+        let colorClass = "text-gray-600"; 
+        let statusIcon = "🔖";
+        let statusText = item['Trạng Thái'] || item.TrangThai || 'Chưa xác định';
 
-    if (confirm(`Bạn có chắc chắn muốn hủy đơn đặt phòng #${bookingId} này không?`)) {
-        // Truyền cả ID và thẻ HTML cần xóa vào hàm cancelBooking
-        cancelBooking(bookingId, bookingCard);
-    }
-}
-
-// ----- HÀM GỌI API HỦY PHÒNG -----
-// Thay đổi: Hàm giờ đây nhận thêm tham số bookingCard
-async function cancelBooking(bookingId, bookingCard) { 
-    // Tạm thời vô hiệu hóa nút Hủy của đơn hàng này
-    if (bookingCard) {
-        const buttonElement = bookingCard.querySelector('button[data-booking-id]');
-        if (buttonElement) {
-            buttonElement.disabled = true;
-            buttonElement.textContent = "Đang hủy...";
-        }
-    }
-    loadingMessage.textContent = "Đang xử lý yêu cầu hủy phòng...";
-    loadingMessage.classList.remove('hidden');
-
-    try {
-        const res = await fetch(`http://localhost:3000/cancel-booking/${bookingId}`, {
-            method: 'PUT', 
-            headers: { 'Content-Type': 'application/json' }
-        });
-
-        if (!res.ok) {
-            const errorData = await res.json();
-            throw new Error(errorData.message || "Không thể hủy phòng.");
+        if (statusText === 'Đã đặt') {
+            colorClass = "text-blue-600 font-bold";
+            statusIcon = "📅";
+        } else if (statusText === 'Đang ở') {
+            colorClass = "text-green-600 font-bold";
+            statusIcon = "🏠";
+        } else if (statusText === 'Đã thanh toán') {
+            colorClass = "text-purple-600 font-bold";
+            statusIcon = "✅";
+        } else if (statusText === 'Đã hủy') {
+            colorClass = "text-red-600 font-bold";
+            statusIcon = "❌";
         }
 
-        alert("Hủy phòng thành công!");
-        
-        // ▼▼▼ LỆNH QUAN TRỌNG: XÓA PHẦN TỬ HTML VỪA HỦY ▼▼▼
-        if (bookingCard && bookingCard.parentElement) {
-            bookingCard.remove();
-        }
-        
-        // Kiểm tra xem còn đơn hàng nào không
-        if (bookingsList.children.length === 0) {
-             loadingMessage.textContent = "Bạn chưa có đơn đặt phòng nào.";
-             loadingMessage.classList.remove('hidden');
-        } else {
-            loadingMessage.classList.add('hidden');
-        }
-        // ▲▲▲ KẾT THÚC LỆNH XÓA VÀ KIỂM TRA ▲▲▲
+        // 4. HTML (Không có nút hủy)
+        const html = `
+            <div class="bg-white p-5 rounded-lg shadow-md border-l-4 ${
+                statusText === 'Đã đặt' ? 'border-blue-500' :
+                statusText === 'Đang ở' ? 'border-green-500' :
+                statusText === 'Đã thanh toán' ? 'border-purple-500' : 'border-gray-300'
+            } mb-4 hover:shadow-xl transition">
+                <div>
+                    <div class="flex items-center mb-2">
+                        <h3 class="font-bold text-xl text-gray-800 mr-2">${item.RoomName}</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded border">${item.RoomCode || 'N/A'}</span>
+                    </div>
+                    
+                    <p class="text-xs text-gray-500 mb-3 italic">
+                        🕐 Đặt lúc: ${orderTime}
+                    </p>
 
-    } catch (err) {
-        alert(`Lỗi: ${err.message}`);
-        // Kích hoạt lại nút nếu bị lỗi
-        if (bookingCard) {
-            const buttonElement = bookingCard.querySelector('button[data-booking-id]');
-            if (buttonElement) {
-                buttonElement.disabled = false;
-                buttonElement.textContent = "Hủy phòng";
-            }
-        }
-        loadingMessage.classList.add('hidden');
-    }
+                    <div class="text-sm text-gray-700 space-y-1">
+                        <p>📅 <b>${checkIn}</b> <span class="text-gray-400 mx-1">→</span> <b>${checkOut}</b></p>
+                        <p>💰 Tổng tiền: <b class="text-red-600 text-lg">${item.TotalPrice}</b></p>
+                        <p>${statusIcon} Trạng thái: <span class="${colorClass}">${statusText}</span></p>
+                    </div>
+                </div>
+            </div>
+        `;
+        bookingsList.innerHTML += html;
+    });
 }
     </script>
 </body>
