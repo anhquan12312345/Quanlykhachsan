@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đặt phòng - Khách sạn Nhóm 11</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('/images/Gemini_Generated_Image_p6w099p6w099p6w0.png'); 
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      font-family: 'Inter', sans-serif;
+    }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; margin: 0; 
+    }
+    input[type=number] { -moz-appearance: textfield; }
+  </style>
+</head>
+<body class="text-gray-800">
+
+  <header class="fixed top-0 left-0 w-full bg-white text-gray-800 shadow-md z-50">
+    <div class="max-w-6xl mx-auto flex justify-between items-center p-4">
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-700"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+        <span class="text-2xl font-bold text-blue-700">Khách sạn Nhóm 11</span>
+      </div>
+
+      <div id="userMenu" class="flex items-center space-x-4">
+   <div class="flex items-center space-x-2"> 
+      <span id="welcomeMessage" class="font-semibold text-gray-700 hidden md:block"></span>
+      
+      <!-- Nút đặt dịch vụ (đã sửa) -->
+      <a href="./dat_dich_vu.html" class="bg-gradient-to-r from-green-600 to-emerald-600 text-white px-4 py-2 rounded-xl font-semibold hover:from-green-700 hover:to-emerald-700 transition-all shadow-md">
+         <i class="fas fa-spa mr-2"></i>Đặt Dịch Vụ
+      </a>
+      
+      <a href="./TTdatphong.html" class="bg-blue-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-blue-700 transition-colors">
+         <i class="fas fa-bed mr-2"></i>Phòng đã đặt
+      </a>
+      
+      <button id="btnLogout" class="bg-red-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-red-700 transition-colors">
+         <i class="fas fa-sign-out-alt mr-2"></i>Đăng xuất
+      </button>
+   </div>
+</div>
+  </header>
+
+  <main class="pt-20">
+    <section class="py-16 bg-white/95 backdrop-blur-sm min-h-screen">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Chọn Phòng Của Bạn</h2>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          <div class="lg:col-span-2 space-y-6">
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row transition-shadow hover:shadow-xl">
+              <img src="/images/Gemini_Generated_Image_ypf8z3ypf8z3ypf8.png" alt="Phòng Tổng thống" class="w-full md:w-1/3 h-60 md:h-auto object-cover">
+              <div class="p-6 flex flex-col justify-between w-full">
+                <div>
+                  <h3 class="text-2xl font-semibold mb-2 text-blue-700">Phòng Tổng thống</h3>
+                  <p class="text-gray-600 mb-4">Đỉnh cao của sự xa hoa. 100m², quản gia riêng.</p>
+                </div>
+                <div class="flex flex-col md:flex-row justify-between items-center mt-4">
+                  <span class="text-2xl font-bold text-gray-900">15.000.000 VNĐ/đêm</span>
+                  <button class="btn-select-room bg-blue-600 text-white py-2 px-5 rounded-xl font-semibold hover:bg-blue-700"
+                    data-room-id="TT01" data-room-name="Phòng Tổng thống" data-room-price="15000000">Chọn phòng này</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row transition-shadow hover:shadow-xl">
+              <img src="/images/Gemini_Generated_Image_mydp7pmydp7pmydp.png" alt="Suite Gia Đình" class="w-full md:w-1/3 h-60 md:h-auto object-cover">
+              <div class="p-6 flex flex-col justify-between w-full">
+                <div>
+                  <h3 class="text-2xl font-semibold mb-2 text-blue-700">Phòng Suite Gia Đình</h3>
+                  <p class="text-gray-600 mb-4">Rộng rãi cho gia đình, 50m².</p>
+                </div>
+                <div class="flex flex-col md:flex-row justify-between items-center mt-4">
+                  <span class="text-2xl font-bold text-gray-900">5.000.000 VNĐ/đêm</span>
+                  <button class="btn-select-room bg-blue-600 text-white py-2 px-5 rounded-xl font-semibold hover:bg-blue-700"
+                    data-room-id="GD01" data-room-name="Phòng Gia Đình" data-room-price="5000000">Chọn phòng này</button>
+                </div>
+              </div>
+            </div>
+
+             <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row transition-shadow hover:shadow-xl">
+              <img src="/images/Gemini_Generated_Image_qw2uxzqw2uxzqw2u.png" alt="Deluxe" class="w-full md:w-1/3 h-60 md:h-auto object-cover">
+              <div class="p-6 flex flex-col justify-between w-full">
+                <div>
+                  <h3 class="text-2xl font-semibold mb-2 text-blue-700">Phòng Deluxe</h3>
+                  <p class="text-gray-600 mb-4">Sang trọng, view sông Hương, 28m².</p>
+                </div>
+                <div class="flex flex-col md:flex-row justify-between items-center mt-4">
+                  <span class="text-2xl font-bold text-gray-900">3.000.000 VNĐ/đêm</span>
+                  <button class="btn-select-room bg-blue-600 text-white py-2 px-5 rounded-xl font-semibold hover:bg-blue-700"
+                    data-room-id="DL01" data-room-name="Phòng Deluxe" data-room-price="3000000">Chọn phòng này</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row transition-shadow hover:shadow-xl">
+                <img src="/images/Gemini_Generated_Image_qw2uxzqw2uxzqw2u.png" alt="Standard" class="w-full md:w-1/3 h-60 md:h-auto object-cover">
+                <div class="p-6 flex flex-col justify-between w-full">
+                  <div>
+                    <h3 class="text-2xl font-semibold mb-2 text-blue-700">Phòng Cặp Đôi</h3>
+                    <p class="text-gray-600 mb-4">Riêng tư, lãng mạn, tặng voucher Sky bar.</p>
+                  </div>
+                  <div class="flex flex-col md:flex-row justify-between items-center mt-4">
+                    <span class="text-2xl font-bold text-gray-900">2.000.000 VNĐ/đêm</span>
+                    <button class="btn-select-room bg-blue-600 text-white py-2 px-5 rounded-xl font-semibold hover:bg-blue-700"
+                      data-room-id="CD01" data-room-name="Phòng Cặp Đôi" data-room-price="2000000">Chọn phòng này</button>
+                  </div>
+                </div>
+              </div>
+
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row transition-shadow hover:shadow-xl">
+                <img src="/images/Gemini_Generated_Image_7br6ua7br6ua7br6.png" alt="Phòng Đơn" class="w-full md:w-1/3 h-60 md:h-auto object-cover">
+                <div class="p-6 flex flex-col justify-between w-full">
+                  <div>
+                    <h3 class="text-2xl font-semibold mb-2 text-blue-700">Phòng Đơn Tiêu Chuẩn</h3>
+                    <p class="text-gray-600 mb-4">Tiện lợi, 20m², giường đơn.</p>
+                  </div>
+                  <div class="flex flex-col md:flex-row justify-between items-center mt-4">
+                    <span class="text-2xl font-bold text-gray-900">1.200.000 VNĐ/đêm</span>
+                    <button class="btn-select-room bg-blue-600 text-white py-2 px-5 rounded-xl font-semibold hover:bg-blue-700"
+                      data-room-id="TC01" data-room-name="Phòng Đơn Tiêu Chuẩn" data-room-price="1200000">Chọn phòng này</button>
+                  </div>
+                </div>
+              </div>
+          </div>
+
+          <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl shadow-lg p-6 lg:sticky lg:top-28">
+              <h3 class="text-2xl font-semibold mb-6 text-center">Thông tin Đặt phòng</h3>
+              <form id="bookingForm" class="space-y-4">
+                
+                <div class="bg-gray-100 p-3 rounded-xl">
+                  <label class="block text-sm font-medium mb-1 text-gray-500">Phòng đã chọn</label>
+                  <div id="selectedRoomName" class="text-lg font-bold text-blue-800">Chưa chọn phòng</div>
+                  <input type="hidden" id="selectedRoomId">
+                  <input type="hidden" id="selectedRoomPrice" value="0">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-sm font-medium mb-1">Nhận phòng</label>
+                    <input type="datetime-local" id="checkin" required class="w-full border rounded-xl px-3 py-2">
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-1">Trả phòng</label>
+                    <input type="date" id="checkout" required class="w-full border rounded-xl px-3 py-2">
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium mb-1">Số khách</label>
+                  <input type="number" id="guests" min="1" value="1" required class="w-full border rounded-xl px-3 py-2">
+                </div>
+
+                <hr class="my-4">
+
+                <h4 class="text-lg font-semibold text-gray-800">Thông tin khách hàng</h4>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-1">Họ và Tên</label>
+                    <input type="text" id="bookingName" readonly class="w-full bg-gray-100 border rounded-xl px-3 py-2 font-semibold text-gray-600">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Số điện thoại</label>
+                    <input type="text" id="bookingSdt" readonly class="w-full bg-gray-100 border rounded-xl px-3 py-2 font-semibold text-gray-600">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Email</label>
+                    <input type="text" id="bookingEmail" readonly class="w-full bg-gray-100 border rounded-xl px-3 py-2 font-semibold text-gray-600">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium mb-1">Số CCCD <span class="text-red-500">*</span></label>
+                    <input type="text" id="bookingCccd" required maxlength="12" pattern="\d{12}" placeholder="Nhập đúng 12 số" class="w-full border rounded-xl px-3 py-2">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                   <div>
+                      <label class="block text-sm font-medium mb-1">Năm sinh <span class="text-red-500">*</span></label>
+                      <input type="number" id="bookingDob" placeholder="1990" required class="w-full border rounded-xl px-3 py-2">
+                   </div>
+                   <div>
+                      <label class="block text-sm font-medium mb-1">Địa chỉ thường trú <span class="text-red-500">*</span></label>
+                      <input type="text" id="bookingHometown" placeholder="XXX" required class="w-full border rounded-xl px-3 py-2">
+                   </div>
+                </div>
+
+                <div class="pt-4 text-center">
+                  <span class="text-sm text-gray-600">Tổng tạm tính</span>
+                  <p id="totalPrice" class="text-3xl font-bold text-red-600">0 VNĐ</p>
+                </div>
+
+                <p id="bookingMessage" class="text-sm text-center text-red-600 min-h-[1.25rem]"></p>
+                
+                <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-xl font-bold text-lg hover:bg-green-700 transition-colors">
+                  Xác nhận Đặt phòng
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="messageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50 p-4">
+    <div class="bg-white text-gray-800 w-full max-w-md rounded-2xl shadow-xl p-6 relative text-center">
+        <h3 id="messageTitle" class="text-xl font-bold mb-4">Thông báo</h3>
+        <p id="messageText" class="mb-4"></p>
+        <button onclick="document.getElementById('messageModal').classList.add('hidden'); document.getElementById('messageModal').classList.remove('flex');" class="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition-colors">OK</button>
+    </div>
+  </div>
+
+  <script>
+    // ----- BIẾN TOÀN CỤC -----
+    const elements = {
+        welcome: document.getElementById('welcomeMessage'),
+        name: document.getElementById('bookingName'),
+        sdt: document.getElementById('bookingSdt'),
+        email: document.getElementById('bookingEmail'),
+        roomName: document.getElementById('selectedRoomName'),
+        roomId: document.getElementById('selectedRoomId'),
+        roomPrice: document.getElementById('selectedRoomPrice'),
+        checkin: document.getElementById('checkin'),
+        checkout: document.getElementById('checkout'),
+        total: document.getElementById('totalPrice'),
+        msg: document.getElementById('bookingMessage'),
+        modal: document.getElementById('messageModal'),
+        modalTitle: document.getElementById('messageTitle'),
+        modalText: document.getElementById('messageText')
+    };
+    let currentUser = null;
+
+    // ----- LOAD TRANG -----
+    document.addEventListener('DOMContentLoaded', () => {
+        const userStr = localStorage.getItem('currentUser');
+        if (!userStr) {
+            alert("Vui lòng đăng nhập trước!");
+            window.location.href = './Trangchu.html';
+            return;
+        }
+
+        currentUser = JSON.parse(userStr);
+
+        // SỬA: Logic hiển thị tên (Ten/hoTen) cho khớp mọi phiên bản code
+        const userName = currentUser.Ten || currentUser.hoTen || '';
+        const userPhone = currentUser.Sdt || currentUser.sdt || currentUser.SoDienThoai || '';
+        const userEmail = currentUser.Email || currentUser.email || '';
+
+        elements.welcome.textContent = `Chào, ${userName}`;
+        elements.name.value = userName;
+        elements.sdt.value = userPhone;
+        elements.email.value = userEmail;
+
+        // Ngày mặc định với giờ 12h trưa
+const today = new Date();
+const checkinDefault = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12, 0); // 12:00 trưa hôm nay
+const checkinString = checkinDefault.toISOString().slice(0, 16); // Format: YYYY-MM-DDTHH:MM
+
+const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+
+elements.checkin.value = checkinString; // Mặc định: Hôm nay 12:00
+elements.checkin.min = new Date().toISOString().slice(0, 16); // Không cho chọn quá khứ
+elements.checkout.value = tomorrow;
+elements.checkout.min = tomorrow;
+
+        elements.checkin.addEventListener('change', () => {
+            const nextDay = new Date(new Date(elements.checkin.value).getTime() + 86400000).toISOString().split('T')[0];
+            elements.checkout.min = nextDay;
+            if (elements.checkout.value < nextDay) elements.checkout.value = nextDay;
+            calcTotal();
+        });
+        elements.checkout.addEventListener('change', calcTotal);
+        document.getElementById('guests').addEventListener('change', calcTotal);
+    });
+
+    // ----- CHỌN PHÒNG -----
+    document.querySelectorAll('.btn-select-room').forEach(btn => {
+        btn.addEventListener('click', () => {
+            elements.roomName.textContent = btn.dataset.roomName;
+            elements.roomId.value = btn.dataset.roomId;
+            elements.roomPrice.value = btn.dataset.roomPrice;
+            calcTotal();
+            if (window.innerWidth < 1024) document.getElementById('bookingForm').scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+
+    // ----- TÍNH TIỀN -----
+    function calcTotal() {
+        const price = parseInt(elements.roomPrice.value) || 0;
+        if (price === 0) { elements.total.textContent = "0 VNĐ"; return; }
+        const d1 = new Date(elements.checkin.value);
+        const d2 = new Date(elements.checkout.value);
+        if (d2 <= d1) { elements.total.textContent = "0 VNĐ"; return; }
+        const nights = Math.ceil((d2 - d1) / (86400000));
+        const total = price * nights;
+        elements.total.textContent = total.toLocaleString('vi-VN') + " VNĐ";
+    }
+
+ document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    elements.msg.textContent = "";
+
+    if (!elements.roomId.value) {
+        elements.msg.textContent = "Vui lòng chọn phòng trước!";
+        return;
+    }
+
+    const btn = e.target.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = "Đang xử lý...";
+
+    const userId = currentUser.Id || currentUser.ID || currentUser.id;
+
+    const payload = {
+        userId: userId,
+        roomId: elements.roomId.value,
+        roomName: elements.roomName.textContent,
+        checkin: elements.checkin.value,
+        checkout: elements.checkout.value,
+        guests: document.getElementById('guests').value,
+        totalPrice: elements.total.textContent,
+        email: elements.email.value,
+        cccd: document.getElementById('bookingCccd').value,
+        dob: document.getElementById('bookingDob').value,
+        hometown: document.getElementById('bookingHometown').value
+    };
+
+    try {
+        const res = await fetch("http://localhost:3000/dat-phong", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+            // Hiển thị thông báo thành công với số phòng được phân
+            let successMessage = data.message;
+            
+            // Nếu server trả về thông tin phòng được phân
+            if (data.roomAssigned) {
+                successMessage += `\n\n🔑 Mã phòng: ${data.roomAssigned.code}`;
+            }
+
+            elements.modalTitle.textContent = "🎉 Đặt phòng thành công!";
+            elements.modalText.textContent = successMessage;
+            elements.modal.classList.remove('hidden');
+            elements.modal.classList.add('flex');
+            
+            // Reset form
+            elements.roomName.textContent = "Chưa chọn phòng";
+            elements.roomId.value = "";
+            elements.roomPrice.value = 0;
+            document.getElementById('bookingCccd').value = "";
+            document.getElementById('bookingDob').value = "";
+            document.getElementById('bookingHometown').value = "";
+            calcTotal();
+        } else {
+            elements.msg.textContent = data.message || "Lỗi đặt phòng.";
+        }
+    } catch (err) {
+        elements.msg.textContent = "Lỗi kết nối Server.";
+    } finally {
+        btn.disabled = false;
+        btn.textContent = "Xác nhận Đặt phòng";
+    }
+});
+
+    document.getElementById('btnLogout').addEventListener('click', () => {
+        localStorage.removeItem('currentUser');
+        window.location.href = './Trangchu.html';
+    });
+  </script>
+</body>
+</html>

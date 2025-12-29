@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử Đặt phòng - Khách sạn Nhóm 11</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-image: url('/images/Gemini_Generated_Image_p6w099p6w099p6w0.png'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Inter', sans-serif;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="fixed top-0 left-0 w-full bg-white text-gray-800 shadow-md z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center p-4">
+            
+            <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-700"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+                <span class="text-2xl font-bold text-blue-700">Khách sạn Nhóm 11</span>
+            </div>
+
+            <div id="userMenu" class="flex items-center space-x-4">
+                <span id="welcomeMessage" class="font-semibold text-gray-700 hidden md:block"></span>    
+                <div class="flex items-center space-x-2"> 
+                    <a href="./trang_dat_phong.html" class="bg-green-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-blue-700 transition-colors"> Quay lại
+                    </a>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-20">
+        <section class="py-16 bg-white/95 backdrop-blur-sm min-h-screen">
+            <div class="max-w-4xl mx-auto px-4"> <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Lịch sử Đặt phòng của Bạn</h2>
+
+                <div id="myBookingsList" class="space-y-6">
+                    </div>
+                
+                <p id="loadingMessage" class="text-center text-gray-600 text-lg mt-8">Đang tải lịch sử đặt phòng...</p>
+    </main> 
+    <div class="mt-10 py-6 border-t border-gray-300 bg-white/80 backdrop-blur-sm text-center">
+        <p class="text-gray-700 font-semibold text-lg">
+            Quý khách muốn hủy phòng xin vui lòng liên hệ SĐT: 
+            <a class="text-red-600 font-bold hover:underline">088999 1111</a>
+        </p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const welcomeMessage = document.getElementById('welcomeMessage'); // Đảm bảo ID này đúng với HTML của bạn
+        const bookingsList = document.getElementById('myBookingsList');   // Đảm bảo ID này đúng với khung chứa danh sách
+        const loadingMessage = document.getElementById('loadingMessage'); // Đảm bảo ID này đúng với dòng thông báo "Đang tải"
+        
+        // --- 1. CHẠY KHI VÀO TRANG ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const userStr = localStorage.getItem('currentUser');
+            
+            if (!userStr) {
+                alert("Vui lòng đăng nhập!");
+                window.location.href = "Trangchu.html"; // Chuyển về trang chủ nếu chưa đăng nhập
+                return;
+            }
+
+            const currentUser = JSON.parse(userStr);
+
+            // --- SỬA LỖI "UNDEFINED" Ở ĐÂY ---
+            // Code này sẽ tự mò xem Server lưu tên là 'Ten' hay 'hoTen' để lấy cho đúng
+            const userName = currentUser.Ten || currentUser.hoTen || currentUser.name || "Khách hàng";
+            const userId = currentUser.Id || currentUser.id || currentUser.ID;
+
+            // Hiển thị tên (Nếu HTML của bạn có chỗ hiện tên)
+            if (welcomeMessage) welcomeMessage.textContent = `Chào, ${userName}`;
+
+            // Gọi server lấy lịch sử
+            if (userId) {
+                fetchMyBookings(userId);
+            } else {
+                console.error("Lỗi: Không tìm thấy ID người dùng");
+            }
+
+            // Xử lý nút đăng xuất (Nếu có nút ID="btnLogout")
+            const btnLogout = document.getElementById('btnLogout');
+            if (btnLogout) {
+                btnLogout.addEventListener('click', () => {
+                    localStorage.removeItem('currentUser');
+                    window.location.href = "Trangchu.html";
+                });
+            }
+        });
+
+        // --- 2. HÀM TẢI DỮ LIỆU ---
+        async function fetchMyBookings(userId) {
+            try {
+                const res = await fetch(`http://localhost:3000/my-bookings/${userId}`);
+                if (!res.ok) throw new Error("Lỗi kết nối Server");
+                
+                const bookings = await res.json();
+                
+                if (bookings.length === 0) {
+                    if(loadingMessage) loadingMessage.textContent = "Bạn chưa có đơn đặt phòng nào.";
+                } else {
+                    if(loadingMessage) loadingMessage.style.display = 'none'; // Ẩn chữ đang tải
+                    renderBookings(bookings);
+                }
+            } catch (err) {
+                console.error(err);
+                if(loadingMessage) {
+                    loadingMessage.textContent = "Không thể tải dữ liệu (Kiểm tra lại Server).";
+                    loadingMessage.style.color = "red";
+                }
+            }
+        }
+
+        // --- 3. HÀM HIỂN THỊ DANH SÁCH ---
+// --- 3. HÀM HIỂN THỊ DANH SÁCH (Chỉ xem, không hủy) ---
+function renderBookings(bookings) {
+    if (!bookingsList) return;
+    bookingsList.innerHTML = "";
+
+    bookings.forEach(item => {
+        // 1. Format ngày
+        const checkIn = new Date(item.CheckIn).toLocaleDateString('vi-VN');
+        const checkOut = new Date(item.CheckOut).toLocaleDateString('vi-VN');
+
+        // 2. Format thời gian đặt
+        let orderTime = 'Vừa xong';
+        if (item.NgayDat) {
+            orderTime = new Date(item.NgayDat).toLocaleString('vi-VN', {
+                hour: '2-digit', minute: '2-digit',
+                day: '2-digit', month: '2-digit', year: 'numeric'
+            });
+        }
+
+        // 3. Xử lý trạng thái
+        let colorClass = "text-gray-600"; 
+        let statusIcon = "🔖";
+        let statusText = item['Trạng Thái'] || item.TrangThai || 'Chưa xác định';
+
+        if (statusText === 'Đã đặt') {
+            colorClass = "text-blue-600 font-bold";
+            statusIcon = "📅";
+        } else if (statusText === 'Đang ở') {
+            colorClass = "text-green-600 font-bold";
+            statusIcon = "🏠";
+        } else if (statusText === 'Đã thanh toán') {
+            colorClass = "text-purple-600 font-bold";
+            statusIcon = "✅";
+        } else if (statusText === 'Đã hủy') {
+            colorClass = "text-red-600 font-bold";
+            statusIcon = "❌";
+        }
+
+        // 4. HTML (Không có nút hủy)
+        const html = `
+            <div class="bg-white p-5 rounded-lg shadow-md border-l-4 ${
+                statusText === 'Đã đặt' ? 'border-blue-500' :
+                statusText === 'Đang ở' ? 'border-green-500' :
+                statusText === 'Đã thanh toán' ? 'border-purple-500' : 'border-gray-300'
+            } mb-4 hover:shadow-xl transition">
+                <div>
+                    <div class="flex items-center mb-2">
+                        <h3 class="font-bold text-xl text-gray-800 mr-2">${item.RoomName}</h3>
+                        <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded border">${item.RoomCode || 'N/A'}</span>
+                    </div>
+                    
+                    <p class="text-xs text-gray-500 mb-3 italic">
+                        🕐 Đặt lúc: ${orderTime}
+                    </p>
+
+                    <div class="text-sm text-gray-700 space-y-1">
+                        <p>📅 <b>${checkIn}</b> <span class="text-gray-400 mx-1">→</span> <b>${checkOut}</b></p>
+                        <p>💰 Tổng tiền: <b class="text-red-600 text-lg">${item.TotalPrice}</b></p>
+                        <p>${statusIcon} Trạng thái: <span class="${colorClass}">${statusText}</span></p>
+                    </div>
+                </div>
+            </div>
+        `;
+        bookingsList.innerHTML += html;
+    });
+}
+    </script>
+</body>
+</html>
