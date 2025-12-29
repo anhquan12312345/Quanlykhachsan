@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <!-- SỬA: Đảm bảo viewport cho thiết kế responsive -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khách sạn Nhóm 11 - Trang chủ (Trangchu.html)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      /* SỬA: Đổi tên file ảnh nền cho khớp */
+      background-image: url('Gemini_Generated_Image_p6w099p6w099p6w0.png'); 
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed; /* Giữ ảnh nền đứng yên khi cuộn */
+      font-family: 'Inter', sans-serif; /* SỬA: Thêm font Inter cho đẹp hơn */
+    }
+    /* Thêm font Inter từ Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+  </style>
+</head>
+<body class="text-gray-800">
+
+  <!-- SỬA: Thêm Header cố định -->
+  <header class="fixed top-0 left-0 w-full bg-white text-gray-800 shadow-md z-50">
+    <div class="max-w-6xl mx-auto flex justify-between items-center p-4">
+      
+      <!-- SỬA: Thay thế H1 bằng logo SVG và text -->
+      <div class="flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-700"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+        <span class="text-2xl font-bold text-blue-700">Khách sạn Nhóm 11</span>
+      </div>
+
+      <div id="authButtons" class="space-x-4">
+        <button id="btnLogin" class="text-blue-700 font-semibold hover:text-blue-800 transition-colors">Đăng nhập</button>
+        <button id="btnRegister" class="bg-blue-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-blue-700 transition-colors">Đăng ký</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- SỬA: Xóa style ảnh nền khỏi section (đã chuyển lên body) -->
+    <section class="relative h-screen flex items-center justify-center">
+      <!-- Lớp phủ mờ -->
+      <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+
+      <!-- Nội dung trang chủ (Bỏ nút auth vì đã chuyển lên header) -->
+      <div class="relative z-10 text-center text-white px-4">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Chào mừng đến với Khách sạn Nhóm 11</h1>
+        <p class="text-lg md:text-xl mb-8">Trải nghiệm dịch vụ đẳng cấp tại Huế.</p>
+      </div>
+    </section>
+
+    <!-- SỬA: Thêm hiệu ứng kính mờ (backdrop-blur) và nền trắng mờ (bg-white/95) -->
+    <section id="gallery" class="py-16 bg-white/95 backdrop-blur-sm">
+      <div class="max-w-6xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Khám phá Khách sạn</h2>
+        <!-- SỬA: Đổi grid-cols-3 thành grid-cols-4 để chứa thêm card, hoặc để 3 và các card mới sẽ xuống dòng -->
+        <!-- Quyết định: Giữ grid-cols-3, các card mới sẽ tự động xuống dòng tiếp theo -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          <!-- Card Sảnh -->
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+            <img src="Gemini_Generated_Image_r88kzqr88kzqr88k.png" alt="Sảnh khách sạn" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <h3 class="text-2xl font-semibold mb-2">Sảnh Chính Sang Trọng</h3>
+              <p class="text-gray-600">Khu vực sảnh chờ rộng rãi và thoáng đãng.</p>
+            </div>
+          </div>
+          
+          <!-- Card Hồ bơi -->
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+            <img src="Gemini_Generated_Image_5gkrzx5gkrzx5gkr.png" alt="Hồ bơi" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <h3 class="text-2xl font-semibold mb-2">Hồ Bơi Vô Cực</h3>
+              <p class="text-gray-600">Thư giãn tuyệt đối với tầm nhìn ra thành phố.</p>
+            </div>
+          </div>
+          
+          <!-- Card Phòng -->
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+            <img src="Gemini_Generated_Image_t0vq2qt0vq2qt0vq.png" alt="Phòng ốc" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <h3 class="text-2xl font-semibold mb-2">Phòng Ốc Đẳng Cấp</h3>
+              <p class="text-gray-600">Nội thất hiện đại, tiện nghi đầy đủ.</p>
+            </div>
+          </div>
+
+          <!-- Card Bar -->
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+            <!-- Thay 'src' bằng ảnh thật của bạn -->
+            <img src="Gemini_Generated_Image_eik92keik92keik9.png" alt="Quầy bar" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <h3 class="text-2xl font-semibold mb-2">Sky Bar Tầng Thượng</h3>
+              <p class="text-gray-600">Thưởng thức cocktail và ngắm nhìn toàn cảnh.</p>
+            </div>
+          </div>
+
+          <!-- Card Gym -->
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+            <!-- Thay 'src' bằng ảnh thật của bạn -->
+            <img src="Gemini_Generated_Image_ulenlzulenlzulen.png" alt="Phòng Gym" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <h3 class="text-2xl font-semibold mb-2">Phòng Gym Hiện Đại</h3>
+              <p class="text-gray-600">Duy trì sức khỏe với trang thiết bị tối tân.</p>
+            </div>
+          </div>
+
+          <!-- Card Buffet -->
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105">
+            <!-- Thay 'src' bằng ảnh thật của bạn -->
+            <img src="Gemini_Generated_Image_vp2fjrvp2fjrvp2f.png" alt="Buffet nhà hàng" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <h3 class="text-2xl font-semibold mb-2">Buffet Sáng & Trưa</h3>
+              <p class="text-gray-600">Ẩm thực đa dạng từ Á đến Âu.</p>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL ĐĂNG NHẬP (SỬA: Thêm link) -->
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50 p-4">
+    <div class="bg-white text-gray-800 w-full max-w-md rounded-2xl shadow-xl p-6 relative">
+      <button onclick="closeLoginModal()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+      <h2 class="text-center text-2xl font-bold text-blue-700 mb-4">Đăng nhập</h2>
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Số điện thoại</label>
+          <input type="tel" id="loginSdt" required class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Mật khẩu</label>
+          <input type="password" id="loginPassword" required class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+
+        <!-- SỬA: Thêm "Nhớ mật khẩu" và "Quên mật khẩu" -->
+        <div class="flex justify-between items-center text-sm">
+          <label for="rememberMe" class="flex items-center space-x-2 cursor-pointer text-gray-600">
+          </label>
+          <!-- SỬA: Đổi <a> thành <button> để xử lý JS -->
+          <button type="button" id="switchToForgotFromLogin" class="font-medium text-blue-600 hover:text-blue-500">Quên mật khẩu?</button>
+        </div>
+
+        <p id="loginMessage" class="text-sm text-center text-red-600 min-h-[1.25rem]"></p>
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-xl font-semibold hover:bg-blue-700 transition-colors">Đăng nhập</button>
+        
+        <!-- SỬA: Thêm link "Đăng ký ngay" -->
+        <p class="text-sm text-center text-gray-600 pt-2">
+          Bạn chưa có tài khoản? 
+          <button type="button" id="switchToRegister" class="font-medium text-blue-600 hover:text-blue-500">Đăng ký ngay</button>
+        </p>
+      </form>
+    </div>
+  </div>
+  
+  <!-- MODAL ĐĂNG KÝ -->
+  <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50 p-4">
+     <!-- SỬA: Cho phép cuộn trên màn hình nhỏ -->
+    <div class="bg-white text-gray-800 w-full max-w-md rounded-2xl shadow-xl p-6 relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeRegisterModal()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+      <h2 class="text-center text-2xl font-bold text-blue-700 mb-4">Đăng ký tài khoản</h2>
+      <form id="registerForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Họ và tên</label>
+          <input type="text" id="registerName" required class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Email</label>
+          <input type="email" id="registerEmail" required class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Số điện thoại</label>
+          <input type="tel" id="registerSdt" required class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Mật khẩu</label>
+          <input type="password" id="registerPassword" required class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <!-- SỬA: Thêm Mật khẩu cấp 2 -->
+        <div>
+          <label class="block text-sm font-medium mb-1">Mật khẩu cấp 2 (Dùng để khôi phục)</label>
+          <input type="password" id="registerPassword2" required class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <p id="registerMessage" class="text-sm text-center text-red-600 min-h-[1.25rem]"></p>
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-xl font-semibold hover:bg-blue-700 transition-colors">Đăng ký</button>
+        
+        <!-- SỬA: Thêm link "Đăng nhập ngay" và "Quên MK" -->
+        <div class="text-sm text-center text-gray-600 space-y-2 pt-2">
+          <p>
+            Bạn đã có tài khoản? 
+            <button type="button" id="switchToLogin" class="font-medium text-blue-600 hover:text-blue-500">Đăng nhập ngay</button>
+          </p>
+          <p>
+            <!-- SỬA: Thêm link Quên MK vào modal Đăng ký -->
+            <button type="button" id="switchToForgotFromRegister" class="font-medium text-blue-600 hover:text-blue-500">Quên mật khẩu?</button>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SỬA: Cập nhật MODAL QUÊN MẬT KHẨU -->
+  <div id="forgotPasswordModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50 p-4">
+    <div class="bg-white text-gray-800 w-full max-w-md rounded-2xl shadow-xl p-6 relative">
+      <button onclick="closeForgotPasswordModal()" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+      <h2 class="text-center text-2xl font-bold text-blue-700 mb-4">Quên mật khẩu</h2>
+      <form id="forgotForm" class="space-y-4">
+        <p class="text-sm text-gray-600">Nhập SĐT và Mật khẩu cấp 2 để khôi phục.</p>
+        <div>
+          <label class="block text-sm font-medium mb-1">Số điện thoại</label>
+          <input type="tel" id="forgotSdt" required class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <!-- SỬA: Thêm Mật khẩu cấp 2 -->
+        <div>
+          <label class="block text-sm font-medium mb-1">Mật khẩu cấp 2</label>
+          <input type="password" id="forgotPassword2" required class="w-full border rounded-xl px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+        </div>
+        <p id="forgotMessage" class="text-sm text-center text-red-600 min-h-[1.25rem]"></p>
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-xl font-semibold hover:bg-blue-700 transition-colors">Gửi yêu cầu</button>
+        
+        <p class="text-sm text-center text-gray-600 pt-2">
+          <button type="button" id="switchToLoginFromForgot" class="font-medium text-blue-600 hover:text-blue-500">Quay lại Đăng nhập</button>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL THÔNG BÁO (Không thay đổi) -->
+  <div id="messageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50 p-4">
+    <div class="bg-white text-gray-800 w-full max-w-md rounded-2xl shadow-xl p-6 relative text-center">
+        <h3 id="messageTitle" class="text-xl font-bold mb-4">Thông báo</h3>
+        <p id="messageText" class="mb-4"></p>
+        <button onclick="closeMessageModal()" class="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition-colors">OK</button>
+    </div>
+  </div>
+
+
+  <!-- SCRIPT (SỬA: Thêm sự kiện) -->
+  <script>
+    const loginModal = document.getElementById("loginModal");
+    const registerModal = document.getElementById("registerModal");
+    const messageModal = document.getElementById("messageModal");
+    const forgotPasswordModal = document.getElementById("forgotPasswordModal"); // SỬA: Thêm modal
+    
+    const btnLogin = document.getElementById("btnLogin");
+    const btnRegister = document.getElementById("btnRegister");
+
+    // ----- HÀM MỞ/ĐÓNG MODAL -----
+    // (Thêm class 'flex' và xóa 'hidden')
+    function openLoginModal() {
+      loginModal.classList.remove("hidden");
+      loginModal.classList.add("flex");
+    }
+    function closeLoginModal() {
+      loginModal.classList.add("hidden");
+      loginModal.classList.remove("flex");
+      document.getElementById("loginMessage").textContent = ""; // Xóa tin nhắn lỗi khi đóng
+    }
+    function openRegisterModal() {
+      registerModal.classList.remove("hidden");
+      registerModal.classList.add("flex");
+    }
+    function closeRegisterModal() {
+      registerModal.classList.add("hidden");
+      registerModal.classList.remove("flex");
+      document.getElementById("registerMessage").textContent = ""; // Xóa tin nhắn lỗi khi đóng
+    }
+    // SỬA: Thêm hàm cho modal Quên MK
+    function openForgotPasswordModal() {
+      forgotPasswordModal.classList.remove("hidden");
+      forgotPasswordModal.classList.add("flex");
+    }
+    function closeForgotPasswordModal() {
+      forgotPasswordModal.classList.add("hidden");
+      forgotPasswordModal.classList.remove("flex");
+      document.getElementById("forgotMessage").textContent = ""; // Xóa tin nhắn lỗi khi đóng
+    }
+    function closeMessageModal() {
+        messageModal.classList.add("hidden");
+        messageModal.classList.remove("flex");
+    }
+    function showMessage(title, text) {
+        document.getElementById('messageTitle').textContent = title;
+        document.getElementById('messageText').textContent = text;
+        messageModal.classList.remove("hidden");
+        messageModal.classList.add("flex");
+    }
+
+    // ----- SỰ KIỆN NÚT HEADER -----
+    btnLogin.onclick = openLoginModal;
+    btnRegister.onclick = openRegisterModal;
+
+    // ----- SỰ KIỆN CHUYỂN ĐỔI MODAL -----
+
+    // "Đăng ký ngay" (từ modal Đăng nhập)
+    document.getElementById("switchToRegister").addEventListener("click", () => {
+      closeLoginModal();
+      openRegisterModal();
+    });
+
+    // "Đăng nhập ngay" (từ modal Đăng ký)
+    document.getElementById("switchToLogin").addEventListener("click", () => {
+      closeRegisterModal();
+      openLoginModal();
+    });
+
+    // "Quên mật khẩu" (từ modal Đăng nhập)
+    document.getElementById("switchToForgotFromLogin").addEventListener("click", () => {
+      closeLoginModal();
+      openForgotPasswordModal();
+    });
+    // "Quên mật khẩu" (từ modal Đăng ký)
+    document.getElementById("switchToForgotFromRegister").addEventListener("click", () => {
+      closeRegisterModal();
+      openForgotPasswordModal();
+    });
+    // "Quay lại Đăng nhập" (từ modal Quên MK)
+    document.getElementById("switchToLoginFromForgot").addEventListener("click", () => {
+      closeForgotPasswordModal();
+      openLoginModal();
+    });
+    
+    // ----- XỬ LÝ FORM API -----
+
+    // SỬA: Xử lý form Quên Mật Khẩu (GỌI API)
+    document.getElementById("forgotForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const sdt = document.getElementById("forgotSdt").value;
+        const password2 = document.getElementById("forgotPassword2").value; // Lấy MK Cấp 2
+        const msg = document.getElementById("forgotMessage");
+        const submitButton = e.target.querySelector('button[type="submit"]');
+
+        if (!sdt || !password2) {
+            msg.textContent = "Vui lòng nhập SĐT và Mật khẩu cấp 2.";
+            return;
+        }
+        msg.textContent = "";
+        submitButton.disabled = true; // Chống click nhiều lần
+        submitButton.textContent = "Đang xử lý...";
+
+        try {
+            const res = await fetch("http://localhost:3000/quen-mat-khau", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ sdt, password2 }), // Gửi SĐT và MK Cấp 2
+            });
+            const data = await res.json();
+            if (res.ok) {
+                // Khôi phục thành công, hiển thị MK Cấp 1
+                closeForgotPasswordModal();
+                showMessage("Mật khẩu của bạn", `Mật khẩu của bạn là: ${data.matKhau}`);
+            } else {
+                msg.textContent = data.message || "Không thể khôi phục. Sai SĐT hoặc MK cấp 2.";
+            }
+        } catch(err) {
+            msg.textContent = "Không thể kết nối máy chủ. Vui lòng thử lại sau.";
+        } finally {
+            submitButton.disabled = false; // Mở lại nút
+            submitButton.textContent = "Gửi yêu cầu";
+        }
+    });
+
+    // ----- API ĐĂNG NHẬP (SỬA: Lưu vào localStorage và chuyển trang) -----
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const sdt = document.getElementById("loginSdt").value;
+      const password = document.getElementById("loginPassword").value;
+      const msg = document.getElementById("loginMessage");
+      const submitButton = e.target.querySelector('button[type="submit"]');
+
+      if (!sdt || !password) {
+        msg.textContent = "Vui lòng nhập Số điện thoại và Mật khẩu.";
+        return;
+      }
+      
+      msg.textContent = "";
+      submitButton.disabled = true;
+      submitButton.textContent = "Đang đăng nhập...";
+
+      try {
+        const res = await fetch("http://localhost:3000/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sdt, password }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+          msg.textContent = "";
+          const currentUser = data.nguoiDung;
+          
+          localStorage.setItem('currentUser', JSON.stringify(currentUser));
+          
+          window.location.href = './trang_dat_phong.html'; 
+
+        } else {
+          msg.textContent = data.message || "Sai SĐT hoặc mật khẩu.";
+        }
+      } catch (err) {
+        msg.textContent = "Không thể kết nối máy chủ. Vui lòng thử lại sau.";
+      } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = "Đăng nhập";
+      }
+    });
+
+    // ----- API ĐĂNG KÝ (SỬA: Thêm password2) -----
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("registerName").value;
+      const email = document.getElementById("registerEmail").value;
+      const sdt = document.getElementById("registerSdt").value;
+      const password = document.getElementById("registerPassword").value;
+      const password2 = document.getElementById("registerPassword2").value; // Lấy MK Cấp 2
+      const msg = document.getElementById("registerMessage");
+      const submitButton = e.target.querySelector('button[type="submit"]');
+
+      if (!name || !email || !sdt || !password || !password2) { // Thêm check password2
+          msg.textContent = "Vui lòng nhập đầy đủ thông tin.";
+          return;
+      }
+
+      // SỬA: Thêm validate mật khẩu
+      if (password === password2) {
+          msg.textContent = "Mật khẩu cấp 1 và cấp 2 không được trùng nhau.";
+          return;
+      }
+
+      msg.textContent = "";
+      submitButton.disabled = true;
+      submitButton.textContent = "Đang đăng ký...";
+
+      try {
+        const res = await fetch("http://localhost:3000/dang-ky", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, sdt, password, password2 }), // Gửi password2
+        });
+        const data = await res.json();
+        if (res.ok) {
+          msg.textContent = "";
+          closeRegisterModal();
+          showMessage("Thành công", "Đăng ký thành công! Vui lòng đăng nhập.");
+          openLoginModal(); // Tự động mở modal đăng nhập
+        } else {
+          msg.textContent = data.message || "Không thể đăng ký. SĐT hoặc Email có thể đã tồn tại.";
+        }
+      } catch (err) {
+        msg.textContent = "Không thể kết nối máy chủ. Vui lòng thử lại sau.";
+      } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = "Đăng ký";
+      }
+    });
+  </script>
+</body>
+</html>
+ 
