@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đặt Dịch Vụ - Khách sạn Nhóm 11</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            background-image: url('/images/Gemini_Generated_Image_p6w099p6w099p6w0.png'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Inter', sans-serif;
+        }
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        .service-selected {
+            border: 3px solid #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        .badge-package {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .badge-basic { background: #e0f2fe; color: #0284c7; }
+        .badge-advanced { background: #fef3c7; color: #d97706; }
+        .badge-premium { background: #fce7f3; color: #be185d; }
+        .tab-active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="fixed top-0 left-0 w-full bg-white text-gray-800 shadow-md z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
+            <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-700"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+                <span class="text-2xl font-bold text-blue-700">Khách sạn Nhóm 11</span>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <span id="welcomeMessage" class="font-semibold text-gray-700"></span>
+                <a href="./lich_su_dich_vu.html" class="bg-purple-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-purple-700 transition-colors">
+                    <i class="fas fa-history mr-2"></i>Lịch sử
+                </a>
+                <a href="./trang_dat_phong.html" class="bg-blue-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-blue-700 transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>Quay lại
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-24 pb-12">
+        <section class="py-8 bg-white/95 backdrop-blur-sm min-h-screen">
+            <div class="max-w-7xl mx-auto px-4">
+                <h2 class="text-4xl font-bold text-center mb-4 text-gray-800">
+                    <i class="fas fa-concierge-bell text-blue-600 mr-3"></i>Dịch vụ Cao cấp
+                </h2>
+                <p class="text-center text-gray-600 mb-8">Trải nghiệm đẳng cấp 5 sao tại Khách sạn Nhóm 11</p>
+
+                <div class="flex justify-center mb-8 space-x-2 overflow-x-auto">
+                    <button onclick="showCategory('all')" id="tab-all" class="px-6 py-3 rounded-xl font-semibold transition tab-active">
+                        <i class="fas fa-th mr-2"></i>Tất cả
+                    </button>
+                    <button onclick="showCategory('wellness')" id="tab-wellness" class="px-6 py-3 rounded-xl font-semibold transition bg-gray-200 hover:bg-gray-300">
+                        <i class="fas fa-spa mr-2"></i>Wellness & Spa
+                    </button>
+                    <button onclick="showCategory('food')" id="tab-food" class="px-6 py-3 rounded-xl font-semibold transition bg-gray-200 hover:bg-gray-300">
+                        <i class="fas fa-utensils mr-2"></i>Ẩm thực
+                    </button>
+                    <button onclick="showCategory('fitness')" id="tab-fitness" class="px-6 py-3 rounded-xl font-semibold transition bg-gray-200 hover:bg-gray-300">
+                        <i class="fas fa-dumbbell mr-2"></i>Thể thao
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    <div class="lg:col-span-2">
+                        <div id="servicesContainer" class="space-y-6">
+                            
+                            <div class="service-card bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer" data-category="fitness" onclick="selectService('gym', 'Vé Gym 1 ngày', 100000)">
+                                <div class="flex flex-col md:flex-row">
+                                    <img src="/images/Gemini_Generated_Image_ulenlzulenlzulen.png" alt="Gym" class="w-full md:w-1/3 h-48 object-cover">
+                                    <div class="p-6 flex-1">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h3 class="text-2xl font-bold text-blue-700">
+                                                <i class="fas fa-dumbbell mr-2"></i>Vé Gym 1 ngày
+                                            </h3>
+                                            <input type="checkbox" id="check-gym" class="w-6 h-6 accent-blue-600">
+                                        </div>
+                                        <p class="text-gray-600 mb-4 text-sm">
+                                            • Phòng tập hiện đại 500m²<br>
+                                            • Trang thiết bị Technogym cao cấp<br>
+                                            • PT miễn phí 30 phút<br>
+                                            • Khăn tắm & nước uống
+                                        </p>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-2xl font-bold text-red-600">100.000₫</span>
+                                            <div class="flex items-center space-x-3">
+                                                <button onclick="changeQty('gym', -1); event.stopPropagation();" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">-</button>
+                                                <span id="qty-gym" class="font-bold text-lg w-8 text-center">1</span>
+                                                <button onclick="changeQty('gym', 1); event.stopPropagation();" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="service-card bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer" data-category="food" onclick="selectService('buffet', 'Buffet Sáng', 250000)">
+                                <div class="flex flex-col md:flex-row">
+                                    <img src="/images/Gemini_Generated_Image_vp2fjrvp2fjrvp2f.png" alt="Buffet" class="w-full md:w-1/3 h-48 object-cover">
+                                    <div class="p-6 flex-1">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h3 class="text-2xl font-bold text-orange-600">
+                                                <i class="fas fa-utensils mr-2"></i>Buffet Sáng
+                                            </h3>
+                                            <input type="checkbox" id="check-buffet" class="w-6 h-6 accent-orange-600">
+                                        </div>
+                                        <p class="text-gray-600 mb-4 text-sm">
+                                            • Hơn 100 món Á - Âu<br>
+                                            • Phở, Bánh mì Việt Nam<br>
+                                            • Trái cây tươi & Sinh tố<br>
+                                            • View sông Hương (6h30 - 10h)
+                                        </p>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-2xl font-bold text-red-600">250.000₫</span>
+                                            <div class="flex items-center space-x-3">
+                                                <button onclick="changeQty('buffet', -1); event.stopPropagation();" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">-</button>
+                                                <span id="qty-buffet" class="font-bold text-lg w-8 text-center">1</span>
+                                                <button onclick="changeQty('buffet', 1); event.stopPropagation();" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="service-card bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer" data-category="food" onclick="selectService('skybar', 'Voucher Skybar 300K', 300000)">
+                                <div class="flex flex-col md:flex-row">
+                                    <img src="/images/Gemini_Generated_Image_eik92keik92keik9.png" alt="Skybar" class="w-full md:w-1/3 h-48 object-cover">
+                                    <div class="p-6 flex-1">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h3 class="text-2xl font-bold text-violet-600">
+                                                <i class="fas fa-cocktail mr-2"></i>Voucher Skybar 300K
+                                            </h3>
+                                            <input type="checkbox" id="check-skybar" class="w-6 h-6 accent-violet-600">
+                                        </div>
+                                        <p class="text-gray-600 mb-4 text-sm">
+                                            • Tầng 20 - View 360° thành phố<br>
+                                            • 2 Cocktails signature<br>
+                                            • DJ & Live Music (18h - 2h sáng)<br>
+                                            • Áp dụng cho 2 người
+                                        </p>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-2xl font-bold text-red-600">300.000₫</span>
+                                            <div class="flex items-center space-x-3">
+                                                <button onclick="changeQty('skybar', -1); event.stopPropagation();" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">-</button>
+                                                <span id="qty-skybar" class="font-bold text-lg w-8 text-center">1</span>
+                                                <button onclick="changeQty('skybar', 1); event.stopPropagation();" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="service-card bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer" data-category="wellness" onclick="selectService('sauna', 'Phòng Xông Hơi 60 phút', 200000)">
+                                <div class="flex flex-col md:flex-row">
+                                    <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400" alt="Sauna" class="w-full md:w-1/3 h-48 object-cover">
+                                    <div class="p-6 flex-1">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <h3 class="text-2xl font-bold text-rose-600">
+                                                <i class="fas fa-hot-tub mr-2"></i>Phòng Xông Hơi 60 phút
+                                            </h3>
+                                            <input type="checkbox" id="check-sauna" class="w-6 h-6 accent-rose-600">
+                                        </div>
+                                        <p class="text-gray-600 mb-4 text-sm">
+                                            • Xông hơi khô & ẩm<br>
+                                            • Jacuzzi thư giãn<br>
+                                            • Trà thảo mộc detox<br>
+                                            • Khăn cao cấp & áo choàng
+                                        </p>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-2xl font-bold text-red-600">200.000₫</span>
+                                            <div class="flex items-center space-x-3">
+                                                <button onclick="changeQty('sauna', -1); event.stopPropagation();" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">-</button>
+                                                <span id="qty-sauna" class="font-bold text-lg w-8 text-center">1</span>
+                                                <button onclick="changeQty('sauna', 1); event.stopPropagation();" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="service-card bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer" data-category="wellness" onclick="selectService('spa-basic', 'Gói Spa Cơ Bản', 400000)">
+                                <div class="flex flex-col md:flex-row">
+                                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=400" alt="Spa Basic" class="w-full md:w-1/3 h-48 object-cover">
+                                    <div class="p-6 flex-1">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <div>
+                                                <h3 class="text-2xl font-bold text-purple-600">
+                                                    <i class="fas fa-spa mr-2"></i>Gói Spa Cơ Bản
+                                                </h3>
+                                                <span class="badge-package badge-basic">CƠ BẢN</span>
+                                            </div>
+                                            <input type="checkbox" id="check-spa-basic" class="w-6 h-6 accent-purple-600">
+                                        </div>
+                                        <p class="text-gray-600 mb-4 text-sm">
+                                            ⏱️ <strong>90 phút</strong><br>
+                                            • Massage body thư giãn (60')<br>
+                                            • Chăm sóc da mặt cơ bản (30')<br>
+                                            • Tinh dầu thiên nhiên<br>
+                                            • Trà thảo mộc
+                                        </p>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-2xl font-bold text-red-600">400.000₫</span>
+                                            <div class="flex items-center space-x-3">
+                                                <button onclick="changeQty('spa-basic', -1); event.stopPropagation();" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">-</button>
+                                                <span id="qty-spa-basic" class="font-bold text-lg w-8 text-center">1</span>
+                                                <button onclick="changeQty('spa-basic', 1); event.stopPropagation();" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="service-card bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer" data-category="wellness" onclick="selectService('spa-advanced', 'Gói Spa Nâng Cao', 700000)">
+                                <div class="flex flex-col md:flex-row">
+                                    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400" alt="Spa Advanced" class="w-full md:w-1/3 h-48 object-cover">
+                                    <div class="p-6 flex-1">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <div>
+                                                <h3 class="text-2xl font-bold text-purple-600">
+                                                    <i class="fas fa-spa mr-2"></i>Gói Spa Nâng Cao
+                                                </h3>
+                                                <span class="badge-package badge-advanced">NÂNG CAO</span>
+                                            </div>
+                                            <input type="checkbox" id="check-spa-advanced" class="w-6 h-6 accent-purple-600">
+                                        </div>
+                                        <p class="text-gray-600 mb-4 text-sm">
+                                            ⏱️ <strong>120 phút</strong><br>
+                                            • Massage trị liệu toàn thân (75')<br>
+                                            • Chăm sóc da mặt chuyên sâu (45')<br>
+                                            • Đắp mặt nạ collagen<br>
+                                            • Foot massage + Nước trái cây
+                                        </p>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-2xl font-bold text-red-600">700.000₫</span>
+                                            <div class="flex items-center space-x-3">
+                                                <button onclick="changeQty('spa-advanced', -1); event.stopPropagation();" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">-</button>
+                                                <span id="qty-spa-advanced" class="font-bold text-lg w-8 text-center">1</span>
+                                                <button onclick="changeQty('spa-advanced', 1); event.stopPropagation();" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="service-card bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer" data-category="wellness" onclick="selectService('spa-premium', 'Gói Spa Hoàng Gia', 1200000)">
+                                <div class="flex flex-col md:flex-row">
+                                    <img src="https://bazaarvietnam.vn/wp-content/uploads/2015/07/Screen-Shot-2015-07-06-at-10.26.30-AM-1024x678.png" alt="Spa Premium" class="w-full md:w-1/3 h-48 object-cover">
+                                    <div class="p-6 flex-1">
+                                        <div class="flex items-center justify-between mb-3">
+                                            <div>
+                                                <h3 class="text-2xl font-bold text-purple-600 flex items-center">
+                                                    <i class="fas fa-crown mr-2"></i>Gói Spa Hoàng Gia
+                                                </h3>
+                                                <span class="badge-package badge-premium">CAO CẤP</span>
+                                            </div>
+                                            <input type="checkbox" id="check-spa-premium" class="w-6 h-6 accent-purple-600">
+                                        </div>
+                                        <p class="text-gray-600 mb-4 text-sm">
+                                            ⏱️ <strong>180 phút</strong> - Phòng VIP riêng tư<br>
+                                            • Massage đá nóng toàn thân (90')<br>
+                                            • Chăm sóc da mặt + Body công nghệ Hàn<br>
+                                            • Tắm sữa thảo dược<br>
+                                            • Manicure & Pedicure<br>
+                                            • Champagne & Trái cây cao cấp
+                                        </p>
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <span class="text-2xl font-bold text-red-600">1.200.000₫</span>
+                                                <span class="text-sm text-gray-500 line-through ml-2">1.500.000₫</span>
+                                            </div>
+                                            <div class="flex items-center space-x-3">
+                                                <button onclick="changeQty('spa-premium', -1); event.stopPropagation();" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">-</button>
+                                                <span id="qty-spa-premium" class="font-bold text-lg w-8 text-center">1</span>
+                                                <button onclick="changeQty('spa-premium', 1); event.stopPropagation();" class="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-1">
+                        <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-28">
+                            <h3 class="text-xl font-bold mb-6 text-center text-blue-700">
+                                <i class="fas fa-shopping-cart mr-2"></i>Giỏ dịch vụ
+                            </h3>
+
+                            <div id="selectedServices" class="space-y-3 mb-6 min-h-[100px] max-h-[300px] overflow-y-auto">
+                                <p class="text-gray-400 text-center italic">Chưa chọn dịch vụ nào</p>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Họ và tên</label>
+                                    <input type="text" id="customerName" readonly class="w-full bg-gray-100 border rounded-xl px-3 py-2 font-semibold text-gray-600">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Số điện thoại</label>
+                                    <input type="text" id="customerPhone" readonly class="w-full bg-gray-100 border rounded-xl px-3 py-2 font-semibold text-gray-600">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Ngày sử dụng</label>
+                                    <input type="date" id="serviceDate" required class="w-full border rounded-xl px-3 py-2">
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium mb-1">Ghi chú</label>
+                                    <textarea id="serviceNote" rows="3" placeholder="Yêu cầu đặc biệt..." class="w-full border rounded-xl px-3 py-2"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 pt-4 border-t">
+                                <div class="flex justify-between items-center mb-4">
+                                    <span class="text-lg font-semibold">Tổng cộng:</span>
+                                    <span id="totalPrice" class="text-3xl font-bold text-red-600">0₫</span>
+                                </div>
+
+                                <p id="errorMessage" class="text-sm text-red-600 text-center mb-2 min-h-[1.25rem]"></p>
+
+                                <button onclick="submitOrder()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-purple-700 transition-all shadow-lg">
+                                    <i class="fas fa-check-circle mr-2"></i>Xác nhận đặt dịch vụ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="messageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50 p-4">
+        <div class="bg-white text-gray-800 w-full max-w-md rounded-2xl shadow-xl p-6 relative text-center">
+            <h3 id="messageTitle" class="text-xl font-bold mb-4">Thông báo</h3>
+            <p id="messageText" class="mb-4"></p>
+            <button onclick="closeModal()" class="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition-colors">OK</button>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let selectedServices = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const userStr = localStorage.getItem('currentUser');
+            if (!userStr) {
+                alert("Vui lòng đăng nhập trước!");
+                window.location.href = './Trangchu.html';
+                return;
+            }
+
+            currentUser = JSON.parse(userStr);
+            const userName = currentUser.Ten || currentUser.hoTen || '';
+            const userPhone = currentUser.Sdt || currentUser.sdt || currentUser.SoDienThoai || '';
+
+            document.getElementById('welcomeMessage').textContent = `Chào, ${userName}`;
+            document.getElementById('customerName').value = userName;
+            document.getElementById('customerPhone').value = userPhone;
+
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('serviceDate').value = today;
+            document.getElementById('serviceDate').min = today;
+        });
+
+        function showCategory(category) {
+            const tabs = ['all', 'wellness', 'food', 'fitness'];
+            tabs.forEach(tab => {
+                const btn = document.getElementById('tab-' + tab);
+                if (tab === category) {
+                    btn.className = 'px-6 py-3 rounded-xl font-semibold transition tab-active';
+                } else {
+                    btn.className = 'px-6 py-3 rounded-xl font-semibold transition bg-gray-200 hover:bg-gray-300';
+                }
+            });
+
+            const cards = document.querySelectorAll('.service-card');
+            cards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                if (category === 'all' || cardCategory === category) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // --- SỬA LOGIC CHỌN DỊCH VỤ ---
+        function selectService(id, name, price) {
+            const checkbox = document.getElementById('check-' + id);
+            
+            // Đảo ngược trạng thái checkbox (vì hàm này gọi khi click vào thẻ div)
+            // Logic đơn giản hóa: Luôn đảo ngược trạng thái hiện tại
+            const isChecked = !checkbox.checked;
+            checkbox.checked = isChecked;
+            
+            const card = checkbox.closest('.service-card');
+            const qtyElement = document.getElementById('qty-' + id);
+            let qty = parseInt(qtyElement.textContent);
+
+            if (isChecked) {
+                card.classList.add('service-selected');
+                // Nếu chưa có trong mảng thì thêm vào
+                const existingIndex = selectedServices.findIndex(s => s.id === id);
+                if (existingIndex === -1) {
+                    selectedServices.push({ id, name, price, qty });
+                } else {
+                    // Nếu đã có thì update số lượng
+                    selectedServices[existingIndex].qty = qty;
+                }
+            } else {
+                card.classList.remove('service-selected');
+                selectedServices = selectedServices.filter(s => s.id !== id);
+            }
+            
+            updateCart();
+        }
+
+        // Xử lý riêng khi click trực tiếp vào checkbox (tránh xung đột)
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            cb.addEventListener('click', (e) => {
+                // Ngăn sự kiện click lan ra thẻ div cha
+                e.stopPropagation();
+                
+                // Mẹo: Đảo lại trạng thái checkbox về như cũ, rồi gọi click() lên thẻ cha
+                // để thẻ cha xử lý toàn bộ logic (bao gồm cả việc tick lại checkbox)
+                cb.checked = !cb.checked; 
+                const card = cb.closest('.service-card');
+                card.click(); 
+            });
+        });
+
+
+        function changeQty(id, delta) {
+            const qtyElement = document.getElementById('qty-' + id);
+            let qty = parseInt(qtyElement.textContent);
+            qty = Math.max(1, qty + delta);
+            qtyElement.textContent = qty;
+            
+            // Cập nhật trong mảng selectedServices nếu dịch vụ đó đang được chọn
+            const index = selectedServices.findIndex(s => s.id === id);
+            if (index !== -1) {
+                selectedServices[index].qty = qty;
+                updateCart();
+            }
+        }
+
+        function updateCart() {
+            const container = document.getElementById('selectedServices');
+            const totalElement = document.getElementById('totalPrice');
+            
+            if (selectedServices.length === 0) {
+                container.innerHTML = '<p class="text-gray-400 text-center italic">Chưa chọn dịch vụ nào</p>';
+                totalElement.textContent = '0₫';
+                return;
+            }
+            
+            let html = '';
+            let total = 0;
+            
+            selectedServices.forEach(service => {
+                const subtotal = service.price * service.qty;
+                total += subtotal;
+                
+                html += `
+                    <div class="bg-gray-50 p-3 rounded-lg flex justify-between items-center animate-fade-in-down">
+                        <div>
+                            <div class="font-semibold text-sm text-gray-800">${service.name}</div>
+                            <div class="text-xs text-gray-500">
+                                ${service.qty} x ${service.price.toLocaleString('vi-VN')}₫
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-bold text-blue-600 mb-1">${subtotal.toLocaleString('vi-VN')}₫</div>
+                            <button onclick="removeService('${service.id}')" class="text-red-500 hover:text-red-700 text-xs font-bold px-2 py-1 rounded bg-red-50 hover:bg-red-100 transition">
+                                <i class="fas fa-trash-alt mr-1"></i>Xóa
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            totalElement.textContent = total.toLocaleString('vi-VN') + '₫';
+        }
+
+        function removeService(id) {
+            const checkbox = document.getElementById('check-' + id);
+            if (checkbox) {
+                checkbox.checked = false;
+                checkbox.closest('.service-card').classList.remove('service-selected');
+            }
+            selectedServices = selectedServices.filter(s => s.id !== id);
+            updateCart();
+        }
+
+        async function submitOrder() {
+            const errorMsg = document.getElementById('errorMessage');
+            errorMsg.textContent = '';
+            
+            if (selectedServices.length === 0) {
+                errorMsg.textContent = 'Vui lòng chọn ít nhất 1 dịch vụ!';
+                return;
+            }
+            
+            const serviceDate = document.getElementById('serviceDate').value;
+            if (!serviceDate) {
+                errorMsg.textContent = 'Vui lòng chọn ngày sử dụng!';
+                return;
+            }
+            
+            const userId = currentUser.Id || currentUser.ID || currentUser.id;
+            const payload = {
+                userId: userId,
+                services: selectedServices,
+                serviceDate: serviceDate,
+                note: document.getElementById('serviceNote').value,
+                customerName: document.getElementById('customerName').value,
+                customerPhone: document.getElementById('customerPhone').value
+            };
+            
+            try {
+                // Thêm loading
+                const btn = document.querySelector('button[onclick="submitOrder()"]');
+                const originalText = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang xử lý...';
+
+                const res = await fetch('http://localhost:3000/api/dat-dich-vu', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await res.json();
+                
+                if (res.ok) {
+                    showModal('Thành công', '✅ Đặt dịch vụ thành công! Chúng tôi sẽ liên hệ xác nhận sớm.');
+                    
+                    // Reset form
+                    selectedServices = [];
+                    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                        cb.checked = false;
+                        cb.closest('.service-card').classList.remove('service-selected');
+                    });
+                    document.querySelectorAll('[id^="qty-"]').forEach(el => el.textContent = '1');
+                    document.getElementById('serviceNote').value = '';
+                    updateCart();
+                } else {
+                    errorMsg.textContent = data.message || 'Lỗi đặt dịch vụ!';
+                }
+            } catch (err) {
+                errorMsg.textContent = 'Lỗi kết nối server!';
+            } finally {
+                const btn = document.querySelector('button[onclick="submitOrder()"]');
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fas fa-check-circle mr-2"></i>Xác nhận đặt dịch vụ`;
+            }
+        }
+
+        function showModal(title, text) {
+            document.getElementById('messageTitle').textContent = title;
+            document.getElementById('messageText').textContent = text;
+            document.getElementById('messageModal').classList.remove('hidden');
+            document.getElementById('messageModal').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('messageModal').classList.add('hidden');
+            document.getElementById('messageModal').classList.remove('flex');
+        }
+    </script>
+</body>
+</html>
