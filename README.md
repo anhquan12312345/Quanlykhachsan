@@ -8,7 +8,6 @@
 
 - [🎯 Tính Năng Chính](#tính-năng-chính)
 - [🔧 Yêu Cầu Hệ Thống](#yêu-cầu-hệ-thống)
-- [📦 Cài Đặt](#cài-đặt)
 - [▶️ Chạy Ứng Dụng](#chạy-ứng-dụng)
 - [👥 Tài Khoản Mẫu](#tài-khoản-mẫu)
 - [📂 Cấu Trúc Dự Án](#cấu-trúc-dự-án)
