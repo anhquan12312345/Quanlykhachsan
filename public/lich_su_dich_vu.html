@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử Dịch vụ - Khách sạn Nhóm 11</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            background-image: url('/images/Gemini_Generated_Image_p6w099p6w099p6w0.png'); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="fixed top-0 left-0 w-full bg-white text-gray-800 shadow-md z-50">
+        <div class="max-w-6xl mx-auto flex justify-between items-center p-4">
+            <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-700"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>
+                <span class="text-2xl font-bold text-blue-700">Khách sạn Nhóm 11</span>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <span id="welcomeMessage" class="font-semibold text-gray-700"></span>    
+                <a href="./dat_dich_vu.html" class="bg-green-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-green-700 transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>Quay lại
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-20">
+        <section class="py-16 bg-white/95 backdrop-blur-sm min-h-screen">
+            <div class="max-w-5xl mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">
+                    <i class="fas fa-history text-purple-600 mr-3"></i>Lịch sử Đặt Dịch vụ
+                </h2>
+
+                <div id="servicesList" class="space-y-4">
+                    <!-- Danh sách sẽ render ở đây -->
+                </div>
+                
+                <p id="loadingMessage" class="text-center text-gray-600 text-lg mt-8">
+                    <i class="fas fa-spinner fa-spin mr-2"></i>Đang tải dữ liệu...
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const userStr = localStorage.getItem('currentUser');
+            
+            if (!userStr) {
+                alert("Vui lòng đăng nhập!");
+                window.location.href = "Trangchu.html";
+                return;
+            }
+
+            currentUser = JSON.parse(userStr);
+            const userName = currentUser.Ten || currentUser.hoTen || currentUser.name || "Khách hàng";
+            const userId = currentUser.Id || currentUser.id || currentUser.ID;
+
+            document.getElementById('welcomeMessage').textContent = `Chào, ${userName}`;
+
+            if (userId) {
+                fetchServiceHistory(userId);
+            } else {
+                console.error("Không tìm thấy ID người dùng");
+            }
+        });
+
+        async function fetchServiceHistory(userId) {
+            const list = document.getElementById('servicesList');
+            const loading = document.getElementById('loadingMessage');
+
+            try {
+                const res = await fetch(`http://localhost:3000/api/lich-su-dich-vu/${userId}`);
+                
+                if (!res.ok) throw new Error("Lỗi kết nối Server");
+                
+                const services = await res.json();
+                
+                loading.style.display = 'none';
+
+                if (services.length === 0) {
+                    list.innerHTML = `
+                        <div class="text-center py-16">
+                            <i class="fas fa-inbox text-gray-300 text-6xl mb-4"></i>
+                            <p class="text-gray-500 text-lg">Bạn chưa đặt dịch vụ nào.</p>
+                            <a href="./dat_dich_vu.html" class="mt-4 inline-block bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700 transition">
+                                Đặt dịch vụ ngay
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    renderServices(services);
+                }
+            } catch (err) {
+                console.error(err);
+                loading.innerHTML = '<p class="text-center text-red-600">❌ Không thể tải dữ liệu. Vui lòng thử lại sau.</p>';
+            }
+        }
+
+        function renderServices(services) {
+            const list = document.getElementById('servicesList');
+            list.innerHTML = "";
+
+            services.forEach(item => {
+                // 1. Format thời gian đặt
+                let orderTime = 'Không rõ';
+                if (item.OrderDate) {
+                    orderTime = new Date(item.OrderDate).toLocaleString('vi-VN', {
+                        hour: '2-digit', 
+                        minute: '2-digit',
+                        day: '2-digit', 
+                        month: '2-digit', 
+                        year: 'numeric'
+                    });
+                }
+
+                // 2. Format ngày sử dụng
+                let serviceDate = 'Chưa xác định';
+                if (item.ServiceDate) {
+                    serviceDate = new Date(item.ServiceDate).toLocaleDateString('vi-VN');
+                }
+
+                // 3. Xử lý trạng thái
+                let statusClass = "text-gray-600";
+                let statusIcon = "🔖";
+                let statusText = item.Status || 'Chờ xác nhận';
+
+                if (statusText === 'Chờ xác nhận') {
+                    statusClass = "text-yellow-600 font-bold";
+                    statusIcon = "⏳";
+                } else if (statusText === 'Đang sử dụng') {
+                    statusClass = "text-green-600 font-bold";
+                    statusIcon = "✅";
+                } else if (statusText === 'Đã thanh toán') {
+                    statusClass = "text-purple-600 font-bold";
+                    statusIcon = "💳";
+                } else if (statusText === 'Đã hủy') {
+                    statusClass = "text-red-600 font-bold";
+                    statusIcon = "❌";
+                }
+
+                // 4. Format tiền
+                const parseMoney = (raw) => {
+                    if (!raw) return 0;
+                    if (typeof raw === 'number') return raw;
+                    return parseInt(String(raw).replace(/[^0-9]/g, '')) || 0;
+                };
+                
+                const totalPrice = parseMoney(item.TotalPrice).toLocaleString('vi-VN') + '₫';
+
+                // 5. HTML
+                const html = `
+                    <div class="bg-white p-5 rounded-xl shadow-md border-l-4 ${
+                        statusText === 'Chờ xác nhận' ? 'border-yellow-500' :
+                        statusText === 'Đang sử dụng' ? 'border-green-500' :
+                        statusText === 'Đã thanh toán' ? 'border-purple-500' : 'border-gray-300'
+                    } hover:shadow-lg transition">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex-1">
+                                <h3 class="font-bold text-xl text-gray-800 mb-1">
+                                    <i class="fas fa-concierge-bell text-blue-600 mr-2"></i>${item.ServiceName}
+                                </h3>
+                                <p class="text-xs text-gray-500 italic mb-2">
+                                    🕐 Đặt lúc: ${orderTime}
+                                </p>
+                            </div>
+                            <span class="${statusClass} text-sm font-bold px-3 py-1 rounded-full bg-gray-50 border">
+                                ${statusIcon} ${statusText}
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 text-sm text-gray-700">
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <p class="text-xs text-gray-500 mb-1">Số lượng</p>
+                                <p class="font-bold text-lg text-blue-600">${item.Quantity || 1}</p>
+                            </div>
+                            
+                            <div class="bg-gray-50 p-3 rounded-lg">
+                                <p class="text-xs text-gray-500 mb-1">Tổng tiền</p>
+                                <p class="font-bold text-lg text-red-600">${totalPrice}</p>
+                            </div>
+                            
+                            <div class="col-span-2 bg-blue-50 p-3 rounded-lg">
+                                <p class="text-xs text-gray-600 mb-1">📅 Ngày sử dụng</p>
+                                <p class="font-bold text-blue-700">${serviceDate}</p>
+                            </div>
+                        </div>
+
+                        ${item.Note ? `
+                            <div class="mt-3 bg-yellow-50 border-l-4 border-yellow-400 p-3 rounded">
+                                <p class="text-xs text-gray-600 mb-1">📝 Ghi chú:</p>
+                                <p class="text-sm text-gray-800 italic">${item.Note}</p>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                list.innerHTML += html;
+            });
+        }
+    </script>
+</body>
+</html>

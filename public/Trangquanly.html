@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Quản lý Khách sạn Nhóm 11</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .sidebar-active { background-color: #1e40af; border-right: 4px solid #60a5fa; }
+        .btn { padding: 0.375rem 0.75rem; border-radius: 0.25rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .btn-primary { background-color: #0d6efd; color: white; border: 1px solid #0d6efd; }
+        .btn-outline-primary { background-color: transparent; color: #0d6efd; border: 1px solid #0d6efd; }
+        .btn-primary:hover { background-color: #0b5ed7; }
+        .btn-outline-primary:hover { background-color: #0d6efd; color: white; }
+        .badge { padding: 0.35em 0.65em; font-size: 0.75em; font-weight: 700; border-radius: 0.25rem; color: white; }
+        .bg-success { background-color: #198754; }
+        .bg-warning { background-color: #ffc107; color: #000; }
+        .bg-secondary { background-color: #6c757d; }
+        .bg-primary { background-color: #0d6efd; }
+        .text-danger { color: #dc3545; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 h-screen overflow-hidden flex">
+
+    <aside class="w-64 bg-blue-900 text-white flex-shrink-0 flex flex-col transition-all duration-300">
+        <div class="p-6 flex items-center justify-center border-b border-blue-800">
+            <h1 class="text-2xl font-bold tracking-wider">ADMIN N11</h1>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-4 space-y-1">
+            <button onclick="showSection('dashboard')" class="nav-item w-full flex items-center px-6 py-3 hover:bg-blue-800 transition sidebar-active" id="nav-dashboard">
+                <i class="fas fa-chart-line w-5 h-5 mr-3"></i> Tổng quan
+            </button>
+            <button onclick="showSection('rooms')" class="nav-item w-full flex items-center px-6 py-3 hover:bg-blue-800 transition" id="nav-rooms">
+                <i class="fas fa-door-open w-5 h-5 mr-3"></i> Phòng
+            </button>
+            <button onclick="showSection('payment')" class="nav-item w-full flex items-center px-6 py-3 hover:bg-blue-800 transition" id="nav-payment">
+                <i class="fas fa-credit-card w-5 h-5 mr-3"></i> Thanh toán
+            </button>
+            <button onclick="showSection('staff')" class="nav-item w-full flex items-center px-6 py-3 hover:bg-blue-800 transition" id="nav-staff">
+                <i class="fas fa-users-cog w-5 h-5 mr-3"></i> Nhân lực
+            </button>
+            <button onclick="showSection('customers')" class="nav-item w-full flex items-center px-6 py-3 hover:bg-blue-800 transition" id="nav-customers">
+                <i class="fas fa-user-tag w-5 h-5 mr-3"></i> Khách hàng
+            </button>
+            <button onclick="showSection('services')" class="nav-item w-full flex items-center px-6 py-3 hover:bg-blue-800 transition" id="nav-services">
+                <i class="fas fa-concierge-bell w-5 h-5 mr-3"></i> Dịch vụ
+            </button>
+            <button onclick="showSection('revenue')" class="nav-item w-full flex items-center px-6 py-3 hover:bg-blue-800 transition" id="nav-revenue">
+                <i class="fas fa-hand-holding-usd w-5 h-5 mr-3"></i> Thống kê Doanh thu
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-blue-800">
+            <button onclick="logout()" class="flex items-center text-red-300 hover:text-red-100 w-full">
+                <i class="fas fa-sign-out-alt w-5 h-5 mr-3"></i> Đăng xuất
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+        <header class="bg-white shadow-sm py-4 px-6 flex justify-between items-center z-10">
+            <h2 id="page-title" class="text-xl font-bold text-gray-800">Tổng quan hệ thống</h2>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm text-gray-600">Xin chào, <span class="font-bold text-blue-700">Quản lý</span></span>
+                <div class="h-10 w-10 bg-gray-300 rounded-full overflow-hidden">
+                    <img src="/images/traidep.jpg" alt="Admin Avatar">
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-5 p-6 relative">
+            
+            <section id="dashboard" class="page-section">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-600">
+                        <p class="text-gray-500 text-sm">Doanh thu hôm nay</p>
+                        <h3 id="stat-revenue" class="text-2xl font-bold text-gray-800">Loading...</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-red-500">
+                        <p class="text-gray-500 text-sm">Phòng đang có khách</p>
+                        <h3 id="stat-booked" class="text-2xl font-bold text-red-600">...</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-green-500">
+                        <p class="text-gray-500 text-sm">Phòng trống</p>
+                        <h3 id="stat-free" class="text-2xl font-bold text-green-600">...</h3>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-yellow-500">
+                        <p class="text-gray-500 text-sm">Yêu cầu dịch vụ</p>
+                        <h3 id="stat-services" class="text-2xl font-bold text-gray-800">Loading...</h3>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-bold text-xl text-gray-800 flex items-center">
+                            <i class="fas fa-chart-bar mr-2 text-blue-600"></i> Biểu đồ doanh thu theo Tuần
+                        </h3>
+                        <div class="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                            Tháng 12/2025
+                        </div>
+                    </div>
+                    <div class="relative h-80 w-full">
+                        <canvas id="weeklyRevenueChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="rooms" class="page-section hidden">
+                <div class="flex justify-between items-center mb-6 sticky top-0 bg-gray-50 py-3 z-20 border-b">
+                    <h3 class="text-lg font-bold text-gray-800">Sơ đồ phòng theo hạng</h3>
+                    <div class="space-x-2 text-sm font-medium flex overflow-x-auto pb-2" id="room-filter-buttons">
+                        <button onclick="filterRooms('all')" class="filter-btn px-3 py-1 rounded-full bg-gray-800 text-white shadow-sm transition hover:scale-105 active:scale-95">Tất cả</button>
+                        <button onclick="filterRooms('Trống')" class="filter-btn px-3 py-1 rounded-full bg-white border border-gray-300 text-gray-700 shadow-sm transition hover:bg-green-50 hover:border-green-500">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2 inline-block"></span>Trống
+                        </button>
+                        <button onclick="filterRooms('Đang ở')" class="filter-btn px-3 py-1 rounded-full bg-white border border-gray-300 text-gray-700 shadow-sm transition hover:bg-red-50 hover:border-red-500">
+                            <span class="w-2 h-2 bg-red-500 rounded-full mr-2 inline-block"></span>Đang ở
+                        </button>
+                        <button onclick="filterRooms('Đã đặt')" class="filter-btn px-3 py-1 rounded-full bg-white border border-gray-300 text-gray-700 shadow-sm transition hover:bg-blue-50 hover:border-blue-500">
+                            <span class="w-2 h-2 bg-blue-500 rounded-full mr-2 inline-block"></span>Đã đặt
+                        </button>
+                        <button onclick="filterRooms('Bảo trì')" class="filter-btn px-3 py-1 rounded-full bg-white border border-gray-300 text-gray-700 shadow-sm transition hover:bg-gray-100 hover:border-gray-500">
+                            <span class="w-2 h-2 bg-gray-500 rounded-full mr-2 inline-block"></span>Bảo trì
+                        </button>
+                    </div>
+                </div>
+                <div id="rooms-container" class="space-y-8 pb-10"></div>
+            </section>
+
+            <section id="payment" class="page-section hidden">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="p-4 border-b flex flex-col bg-gray-50">
+                        <div class="flex justify-between items-center mb-3">
+                            <div>
+                                <button onclick="switchPaymentTab('unpaid')" class="btn btn-primary" id="btnChuaThanhToan">Chưa thanh toán</button>
+                                <button onclick="switchPaymentTab('paid')" class="btn btn-outline-primary" id="btnDaThanhToan">Đã thanh toán</button>
+                            </div>
+                            <div>
+                                <input type="text" class="border p-2 rounded w-64" id="searchInput" placeholder="Tìm tên khách hàng..." onkeyup="renderTable()">
+                            </div>
+                        </div>
+                        <table class="w-full text-left border-collapse table-auto">
+                            <thead class="bg-gray-100 text-gray-600 text-sm">
+                                <tr>
+                                    <th class="p-3">Mã HĐ</th>
+                                    <th class="p-3">Khách hàng</th>
+                                    <th class="p-3">Phòng</th>
+                                    <th class="p-3">Tổng tiền</th>
+                                    <th class="p-3">Ngày tạo</th>
+                                    <th class="p-3">Trạng thái</th>
+                                    <th class="p-3">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="staff" class="page-section hidden">
+                 <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="p-4 border-b flex justify-between items-center">
+                        <h3 class="font-bold text-lg">Quản lý nhân sự</h3>
+                        <button onclick="openSecurityModal('add_nv', null)" class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700 font-bold transition">
+                            + Thêm NV
+                        </button>
+                    </div>
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-gray-100 text-gray-600 text-sm">
+                            <tr>
+                                <th class="p-3">ID</th>
+                                <th class="p-3">Họ tên</th>
+                                <th class="p-3">Tài khoản</th>
+                                <th class="p-3">Mật khẩu</th>
+                                <th class="p-3">Chức vụ</th>
+                                <th class="p-3">SĐT</th>
+                                <th class="p-3">Email</th>
+                                <th class="p-3">Quê quán</th>
+                                <th class="p-3">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staff-list" class="text-sm"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="customers" class="page-section hidden">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="p-4 border-b flex justify-between items-center">
+                        <h3 class="font-bold">Dữ liệu khách hàng</h3>
+                        <input type="text" id="searchCustomerInput" onkeyup="filterCustomers()" 
+                               placeholder="Tìm theo Tên/SĐT/CCCD..." 
+                               class="border rounded px-3 py-1 text-sm w-64 outline-none focus:border-blue-500 transition">
+                    </div>
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-gray-100 text-gray-600 text-sm">
+                            <tr>
+                                <th class="p-3">Họ tên</th>
+                                <th class="p-3">SĐT</th>
+                                <th class="p-3">CCCD</th>
+                                <th class="p-3">Đã sử dụng</th> 
+                                <th class="p-3">Chi tiêu</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-sm">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="services" class="page-section hidden">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div class="p-4 border-b flex justify-between items-center bg-gray-50">
+                        <h3 class="font-bold text-lg text-blue-800">Quản lý Đặt Dịch Vụ</h3>
+                        <div class="flex space-x-2">
+                            <button id="btnServiceUnpaid" onclick="switchServiceTab('unpaid')" 
+                                    class="px-4 py-2 bg-blue-600 text-white rounded font-bold text-sm shadow hover:bg-blue-700 transition">
+                                Chưa thanh toán
+                            </button>
+                            <button id="btnServicePaid" onclick="switchServiceTab('paid')" 
+                                    class="px-4 py-2 bg-white text-blue-600 border border-blue-600 rounded font-bold text-sm hover:bg-blue-50 transition">
+                                Đã thanh toán
+                            </button>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead class="bg-gray-100 text-gray-600 text-sm uppercase">
+                                <tr>
+                                    <th class="p-4 border-b">Ngày đặt</th>
+                                    <th class="p-4 border-b">Khách hàng</th>
+                                    <th class="p-4 border-b">SĐT</th>
+                                    <th class="p-4 border-b">Dịch vụ</th>
+                                    <th class="p-4 border-b text-center">SL</th>
+                                    <th class="p-4 border-b text-right">Tổng tiền</th>
+                                    <th class="p-4 border-b">Ngày dùng</th>
+                                    <th class="p-4 border-b">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody id="services-table-body" class="text-sm text-gray-700"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="revenue" class="page-section hidden">
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-lg">Báo cáo doanh thu tháng này</h3>
+                        <button onclick="loadRevenueReport()" class="text-blue-600 hover:underline text-sm"><i class="fas fa-sync-alt"></i> Cập nhật</button>
+                    </div>
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-gray-100 text-gray-700 text-sm uppercase">
+                            <tr>
+                                <th class="p-3 border-b">Tháng</th>
+                                <th class="p-3 border-b text-blue-700">Dịch vụ</th>
+                                <th class="p-3 border-b text-green-700">Phòng</th>
+                                <th class="p-3 border-b text-red-700 font-bold text-right">Tổng tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody id="revenue-table-body" class="text-gray-700 font-medium">
+                            <tr><td colspan="4" class="p-4 text-center">Đang tải dữ liệu...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden justify-center items-center z-50">
+        <div class="bg-white w-full max-w-lg rounded-xl shadow-2xl p-6 relative">
+            <h2 class="text-2xl font-bold mb-4">Cài đặt</h2>
+            <p>Chức năng đang cập nhật...</p>
+            <div class="mt-8 flex justify-end"><button onclick="closeSettings()" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Đóng</button></div>
+        </div>
+    </div>
+
+    <div id="security-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-[9999]">
+        <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-6 relative">
+            <button onclick="closeSecurityModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">✕</button>
+            <div class="text-center mb-6">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4 font-bold text-red-600 text-2xl">🔒</div>
+                <h3 class="text-lg font-bold">Xác thực quyền Admin</h3>
+                <p class="text-sm text-gray-500">Vui lòng nhập mật khẩu để thực hiện.</p>
+            </div>
+            <div class="space-y-4 text-center">
+                <input type="password" id="securityPassInput" placeholder="Mật khẩu..." class="w-full border-2 border-gray-300 rounded-xl px-4 py-2 text-center text-lg focus:border-blue-500 outline-none">
+                <p id="securityError" class="text-red-600 text-sm hidden font-bold italic">⚠ Sai mật khẩu! Thử lại.</p>
+                <div class="flex space-x-3">
+                    <button onclick="closeSecurityModal()" class="flex-1 bg-gray-200 py-2 rounded-xl font-bold">Hủy</button>
+                    <button onclick="confirmSecurityAction()" class="flex-1 bg-red-600 text-white py-2 rounded-xl font-bold shadow-lg">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="room-detail-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50 p-4 transition-opacity">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden transform transition-all scale-100">
+            <div class="bg-blue-600 p-4 flex justify-between items-center text-white">
+                <h3 class="text-xl font-bold flex items-center"><i class="fas fa-info-circle mr-2"></i> Chi tiết đặt phòng</h3>
+                <button onclick="closeRoomDetail()" class="hover:bg-blue-700 p-2 rounded-full transition">✕</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="text-center border-b pb-4">
+                    <h2 id="modal-room-name" class="text-2xl font-bold text-gray-800">Phòng ???</h2>
+                    <span id="modal-status" class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-bold mt-2 inline-block">Đang tải...</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div><p class="text-gray-500">Họ và tên</p><p id="modal-guest-name" class="font-bold text-lg text-gray-800">...</p></div>
+                    <div><p class="text-gray-500">Năm sinh</p><p id="modal-guest-age" class="font-bold text-gray-800">...</p></div>
+                    <div><p class="text-gray-500">CCCD / CMND</p><p id="modal-guest-cccd" class="font-bold text-gray-800">...</p></div>
+                    <div><p class="text-gray-500">Số điện thoại / Email</p><p id="modal-guest-contact" class="font-bold text-gray-800 truncate">...</p></div>
+                </div>
+                <hr class="border-gray-100">
+                <div class="grid grid-cols-2 gap-4 text-sm bg-gray-50 p-3 rounded-lg">
+                    <div><p class="text-gray-500">Check-in</p><p id="modal-checkin" class="font-bold text-blue-600">...</p></div>
+                    <div><p class="text-gray-500">Check-out</p><p id="modal-checkout" class="font-bold text-red-600">...</p></div>
+                    <div><p class="text-gray-500">Số lượng</p><p id="modal-guests" class="font-bold text-gray-800">...</p></div>
+                    <div><p class="text-gray-500">Tạm tính</p><p id="modal-price" class="font-bold text-green-600 text-lg">...</p></div>
+                </div>
+            </div>
+            <div class="bg-gray-100 p-4 flex justify-between items-center"><div id="modal-actions" class="flex space-x-3"></div></div>
+        </div>
+    </div>
+
+    <div id="add-staff-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-[9999] p-4">
+        <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden transform transition-all max-h-[90vh] overflow-y-auto">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-800 p-6 flex justify-between items-center text-white sticky top-0 z-10">
+                <h3 class="text-2xl font-bold flex items-center"><i class="fas fa-user-plus mr-3"></i>Thêm Nhân Viên Mới</h3>
+                <button onclick="closeAddStaffModal()" class="hover:bg-blue-700 p-2 rounded-full transition text-2xl">✕</button>
+            </div>
+            <form id="addStaffForm" class="p-6 space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold mb-2 text-gray-700">Họ và tên <span class="text-red-500">*</span></label>
+                        <input type="text" id="staffName" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2 focus:border-blue-500 outline-none transition" placeholder="Nguyễn Văn A">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-gray-700">Tên đăng nhập <span class="text-red-500">*</span></label>
+                        <input type="text" id="staffUsername" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2 focus:border-blue-500 outline-none transition" placeholder="nguyenvana">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-gray-700">Mật khẩu <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <input type="password" id="staffPassword" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2 pr-10 focus:border-blue-500 outline-none transition" placeholder="••••••••">
+                            <button type="button" onclick="togglePasswordVisibility('staffPassword')" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"><i class="fas fa-eye" id="icon-staffPassword"></i></button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-gray-700">Chức vụ <span class="text-red-500">*</span></label>
+                        <select id="staffRole" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2 focus:border-blue-500 outline-none transition bg-white">
+                            <option value="">-- Chọn chức vụ --</option>
+                            <option value="Nhân viên">Nhân viên</option>
+                            <option value="Quản lý">Quản lý</option>
+                            <option value="Lễ tân">Lễ tân</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-gray-700">Số điện thoại</label>
+                        <input type="tel" id="staffPhone" class="w-full border-2 border-gray-300 rounded-xl px-4 py-2 focus:border-blue-500 outline-none transition" placeholder="0912345678" pattern="[0-9]{10,11}">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 text-gray-700">Email</label>
+                        <input type="email" id="staffEmail" class="w-full border-2 border-gray-300 rounded-xl px-4 py-2 focus:border-blue-500 outline-none transition" placeholder="nhanvien@khachsan.com">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-bold mb-2 text-gray-700">Quê quán <span class="text-red-500">*</span></label>
+                        <input type="text" id="staffHometown" required class="w-full border-2 border-gray-300 rounded-xl px-4 py-2 focus:border-blue-500 outline-none transition" placeholder="Thành phố Huế, Thừa Thiên Huế">
+                    </div>
+                </div>
+                <p id="addStaffError" class="text-sm text-red-600 text-center min-h-[1.25rem] font-bold"></p>
+                <div class="flex space-x-3 pt-4">
+                    <button type="button" onclick="closeAddStaffModal()" class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300 transition"><i class="fas fa-times mr-2"></i>Hủy</button>
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-blue-600 to-blue-800 text-white py-3 rounded-xl font-bold hover:from-blue-700 hover:to-blue-900 transition shadow-lg"><i class="fas fa-check mr-2"></i>Thêm Nhân Viên</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="edit-staff-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-50 transition-opacity">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden transform scale-100">
+            <div class="bg-blue-600 p-4 flex justify-between items-center text-white">
+                <h3 class="text-xl font-bold"><i class="fas fa-user-edit mr-2"></i> Cập nhật thông tin</h3>
+                <button onclick="closeEditModal()" class="hover:bg-blue-700 p-2 rounded-full transition">✕</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <input type="hidden" id="edit-id"> 
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-500 text-sm font-bold mb-1">Họ và tên <span class="text-red-500">*</span></label>
+                        <input type="text" id="edit-name" class="w-full border p-2 rounded bg-gray-200 text-gray-500 cursor-not-allowed font-bold" readonly>
+                    </div>
+                    <div>
+                        <label class="block text-gray-500 text-sm font-bold mb-1">Tài khoản <span class="text-red-500">*</span></label>
+                        <input type="text" id="edit-username" class="w-full border p-2 rounded bg-gray-200 text-gray-500 cursor-not-allowed font-bold" readonly>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-1">Mật khẩu mới</label>
+                        <input type="text" id="edit-pass" class="w-full border p-2 rounded focus:border-blue-500 focus:ring-1 focus:ring-blue-500" placeholder="Nhập nếu muốn đổi...">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-1">Chức vụ</label>
+                        <select id="edit-role" class="w-full border p-2 rounded focus:border-blue-500">
+                            <option value="Nhân viên">Nhân viên</option>
+                            <option value="Quản lý">Quản lý</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-1">Số điện thoại</label>
+                        <input type="text" id="edit-phone" class="w-full border p-2 rounded focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-1">Email</label>
+                        <input type="email" id="edit-email" class="w-full border p-2 rounded focus:border-blue-500">
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-100 p-4 flex justify-end space-x-3">
+                <button onclick="closeEditModal()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded text-gray-800 font-bold transition">Hủy</button>
+                <button onclick="saveStaffEdit()" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white font-bold shadow transition flex items-center"><i class="fas fa-save mr-2"></i> Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="customer-detail-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden justify-center items-center z-[100] p-4">
+        <div class="bg-white w-full max-w-5xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            
+            <div class="bg-blue-800 p-4 flex justify-between items-center text-white shrink-0">
+                <h3 class="text-xl font-bold flex items-center">
+                    <i class="fas fa-history mr-2"></i> Lịch sử khách hàng: <span id="detail-customer-name" class="ml-2 text-yellow-300 uppercase">...</span>
+                </h3>
+                <button onclick="closeCustomerDetail()" class="hover:bg-blue-700 p-2 rounded-full transition text-xl">✕</button>
+            </div>
+
+            <div class="p-6 overflow-y-auto flex-1 space-y-8 bg-gray-50">
+                
+                <div>
+                    <h4 class="font-bold text-lg text-gray-800 mb-3 flex items-center">
+                        <span class="bg-green-600 w-1 h-6 mr-2 rounded"></span> 🏨 Các phòng đã đặt
+                    </h4>
+                    <div class="bg-white rounded-lg shadow border overflow-hidden">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-green-50 text-green-900 font-bold border-b border-green-200">
+                                <tr>
+                                    <th class="p-3">Tên phòng</th>
+                                    <th class="p-3">Ngày nhận (Check-in)</th>
+                                    <th class="p-3">Ngày trả (Check-out)</th>
+                                    <th class="p-3 text-right">Tổng tiền</th>
+                                    <th class="p-3 text-center">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detail-room-list" class="divide-y divide-gray-100">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-lg text-gray-800 mb-3 flex items-center">
+                        <span class="bg-blue-600 w-1 h-6 mr-2 rounded"></span> 🍷 Dịch vụ đã sử dụng
+                    </h4>
+                    <div class="bg-white rounded-lg shadow border overflow-hidden">
+                        <table class="w-full text-left text-sm">
+                            <thead class="bg-blue-50 text-blue-900 font-bold border-b border-blue-200">
+                                <tr>
+                                    <th class="p-3">Tên dịch vụ</th>
+                                    <th class="p-3 text-center">Số lượng</th>
+                                    <th class="p-3">Thời gian đặt</th>
+                                    <th class="p-3 text-right">Thành tiền</th>
+                                    <th class="p-3 text-center">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detail-service-list" class="divide-y divide-gray-100">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="p-4 border-t bg-white flex justify-end shrink-0">
+                <button onclick="closeCustomerDetail()" class="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold rounded transition">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let pendingAction = null, pendingId = null, allPayments = [], currentTab = 'unpaid', currentServiceTab = 'unpaid', currentRoomFilter = 'all';
+        let chartInstance = null; 
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+            if (sectionId === 'rooms') generateRooms();
+            if (sectionId === 'staff') loadStaff();
+            if (sectionId === 'dashboard') {
+                loadDashboardStats();
+                drawWeeklyChart(); 
+            }
+            if (sectionId === 'payment') loadPaymentData();
+            if (sectionId === 'services') loadServiceBookings();
+            if (sectionId === 'revenue') loadRevenueReport();
+            if (sectionId === 'customers') loadCustomers();
+            
+            const titles = { 'dashboard': 'Tổng quan hệ thống', 'rooms': 'Sơ đồ phòng', 'staff': 'Quản lý nhân sự', 'payment': 'Thanh toán', 'customers': 'Khách hàng', 'services': 'Dịch vụ', 'revenue': 'Doanh thu' };
+            document.getElementById('page-title').textContent = titles[sectionId] || 'Quản lý';
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('sidebar-active'));
+            document.getElementById('nav-' + sectionId).classList.add('sidebar-active');
+        }
+
+        async function loadDashboardStats() {
+            try {
+                const res = await fetch('http://localhost:3000/api/thong-ke-dashboard');
+                if (!res.ok) throw new Error("API chưa sẵn sàng");
+                const data = await res.json();
+                const revenueFormatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.DoanhThuHomNay || 0);
+                document.getElementById('stat-revenue').innerText = revenueFormatted; 
+                document.getElementById('stat-booked').innerText = (data.DangO || 0) + ' Phòng';
+                document.getElementById('stat-free').innerText = (data.PhongTrong || 0) + ' Phòng';
+                document.getElementById('stat-services').innerText = (data.DichVuMoi || 0) + ' Mới';
+            } catch (error) { 
+                console.error(error); 
+                document.getElementById('stat-revenue').innerText = '0 ₫'; 
+            }
+        }
+
+        async function drawWeeklyChart() {
+            const ctx = document.getElementById('weeklyRevenueChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+            let realData = [0, 0, 0, 0];
+            try {
+                const res = await fetch('http://localhost:3000/api/bieu-do-tuan');
+                if(res.ok) realData = await res.json();
+            } catch (e) { console.error("Lỗi tải biểu đồ:", e); }
+
+            const labels = ['Tuần 1 (1-7)', 'Tuần 2 (8-14)', 'Tuần 3 (15-21)', 'Tuần 4 (22-31)'];
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Doanh thu (VNĐ)',
+                        data: realData,
+                        backgroundColor: ['rgba(54, 162, 235, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(255, 205, 86, 0.7)', 'rgba(255, 99, 132, 0.7)'],
+                        borderColor: ['rgb(54, 162, 235)', 'rgb(75, 192, 192)', 'rgb(255, 205, 86)', 'rgb(255, 99, 132)'],
+                        borderWidth: 1, borderRadius: 5, barThickness: 50
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, ticks: { callback: function(value) { return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND', maximumSignificantDigits: 3 }).format(value); } } } },
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: function(context) { let label = context.dataset.label || ''; if (label) { label += ': '; } if (context.parsed.y !== null) { label += new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(context.parsed.y); } return label; } } } }
+                }
+            });
+        }
+
+        async function loadStaff() {
+            const list = document.getElementById('staff-list');
+            list.innerHTML = '<tr><td colspan="9" class="p-10 text-center">Đang tải dữ liệu...</td></tr>';
+            try {
+                const res = await fetch('http://localhost:3000/api/nhan-vien');
+                const data = await res.json();
+                let html = '';
+                data.forEach(nv => {
+                    const color = nv.ChucVu.toLowerCase() === 'admin' ? 'text-red-600 font-bold' : '';
+                    let deleteButton = '';
+                    if (nv.MaNV == 1) { deleteButton = `<span class="text-gray-400 italic text-sm cursor-not-allowed">Mặc định</span>`; } 
+                    else { deleteButton = `<button onclick="handleDelete('${nv.MaNV}')" class="text-red-600 font-bold hover:underline text-sm">Xóa</button>`; }
+                    html += `<tr class="border-b hover:bg-gray-50 transition"><td class="p-3 font-bold text-blue-700">NV${nv.MaNV}</td><td class="p-3 font-medium">${nv.HoTen}</td><td class="p-3 text-gray-700 font-medium">${nv.TenDangNhap || '---'}</td><td class="p-3"><div class="flex items-center space-x-2 bg-gray-100 px-2 py-1 rounded w-fit border"><span id="pass-txt-${nv.MaNV}" data-realpass="${nv.MatKhau}" class="font-mono text-xs tracking-widest text-gray-600">******</span><i onclick="openSecurityModal('view_pass', '${nv.MaNV}')" class="fas fa-eye cursor-pointer text-blue-400 hover:text-blue-600 text-xs ml-2" title="Xem mật khẩu"></i></div></td><td class="p-3 uppercase text-xs ${color}">${nv.ChucVu}</td><td class="p-3">${nv.SoDienThoai || '-'}</td><td class="p-3 text-gray-500 text-xs truncate max-w-[150px]">${nv.Email || '-'}</td><td class="p-3 text-gray-600 text-sm">${nv.QueQuan || '-'}</td><td class="p-3"><button onclick="handleEdit('${nv.MaNV}')" class="text-blue-600 font-bold mr-3 hover:underline text-sm">Sửa</button>${deleteButton}</td></tr>`;
+                });
+                list.innerHTML = html;
+            } catch (e) { list.innerHTML = '<tr><td colspan="9" class="p-5 text-red-500 text-center">Lỗi kết nối Server!</td></tr>'; }
+        }
+
+        function filterRooms(status) {
+            currentRoomFilter = status; generateRooms();
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if(btn.textContent.includes('Tất cả')) btn.className = "filter-btn px-3 py-1 rounded-full border border-gray-300 text-gray-700 shadow-sm transition hover:scale-105";
+                else btn.classList.remove('ring-2', 'ring-offset-1', 'ring-blue-500');
+                if(status === 'all' && btn.innerText.includes('Tất cả')) btn.className = "filter-btn px-3 py-1 rounded-full bg-gray-800 text-white shadow-sm transition hover:scale-105";
+                else if(btn.innerText.includes(status) && status !== 'all') btn.classList.add('ring-2', 'ring-offset-1', 'ring-blue-500');
+            });
+        }
+
+        async function generateRooms() {
+            const container = document.getElementById('rooms-container');
+            container.innerHTML = '<div class="text-center py-10 text-gray-500"><i class="fas fa-spinner fa-spin text-2xl mb-2"></i><br>Đang tải sơ đồ...</div>';
+            try {
+                const res = await fetch('http://localhost:3000/api/phong');
+                let data = await res.json();
+                if (currentRoomFilter !== 'all') data = data.filter(room => room.TrangThai === currentRoomFilter);
+                if (!data || data.length === 0) { container.innerHTML = `<div class="text-center text-gray-400 italic py-10">Không tìm thấy phòng "${currentRoomFilter}"<br><button onclick="filterRooms('all')" class="mt-2 text-blue-600 hover:underline">Xem tất cả</button></div>`; return; }
+                const priorityOrder = ['Tổng thống', 'VIP', 'Suite gia đình', 'Gia đình', 'Deluxe', 'Cặp đôi', 'Đơn tiêu chuẩn', 'Tiêu chuẩn'];
+                const groupedRooms = {};
+                data.forEach(room => { const type = room.LoaiPhong || 'Khác'; if (!groupedRooms[type]) groupedRooms[type] = []; groupedRooms[type].push(room); });
+                const sortedKeys = Object.keys(groupedRooms).sort((a, b) => { const indexA = priorityOrder.indexOf(a); const indexB = priorityOrder.indexOf(b); return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB); });
+                let fullHtml = '';
+                sortedKeys.forEach(type => {
+                    const roomsInGroup = groupedRooms[type];
+                    let groupIcon = 'fa-bed', titleColor = 'text-gray-700';
+                    if (type.includes('Tổng thống')) { groupIcon = 'fa-crown'; titleColor = 'text-yellow-600'; }
+                    else if (type.includes('Gia đình')) { groupIcon = 'fa-users'; titleColor = 'text-purple-600'; }
+                    else if (type.includes('Deluxe') || type.includes('VIP')) { groupIcon = 'fa-gem'; titleColor = 'text-blue-600'; }
+                    else if (type.includes('Cặp đôi')) { groupIcon = 'fa-heart'; titleColor = 'text-pink-500'; }
+                    fullHtml += `<div class="room-group"><h4 class="text-xl font-bold mb-3 flex items-center ${titleColor} border-l-4 border-current pl-3"><i class="fas ${groupIcon} mr-2"></i> ${type} <span class="ml-2 text-sm font-normal text-gray-400">(${roomsInGroup.length} phòng)</span></h4><div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">`;
+                    roomsInGroup.forEach(room => {
+                        let statusClass = 'bg-white border border-gray-200', statusText = '<span class="text-green-600 font-bold text-xs"><i class="fas fa-circle text-[8px] mr-1"></i>Trống</span>', guestInfo = '';
+                        if (room.TrangThai === 'Bảo trì') { statusClass = 'bg-gray-100 border-l-4 border-gray-500 shadow-sm'; statusText = '<span class="text-gray-600 font-bold text-xs"><i class="fas fa-circle text-[8px] mr-1"></i>Bảo trì</span>'; guestInfo = '<div class="text-xs text-gray-500 font-medium mt-1 truncate border-t border-gray-200 pt-1"><i class="fas fa-tools mr-1"></i>Đang dọn dẹp</div>'; }
+                        else if (room.TrangThai === 'Đang ở') { statusClass = 'bg-red-50 border-l-4 border-red-500 shadow-sm'; statusText = '<span class="text-red-600 font-bold text-xs"><i class="fas fa-circle text-[8px] mr-1"></i>Đang ở</span>'; if (room.TenKhachHang) guestInfo = `<div class="text-xs text-red-700 font-semibold mt-1 truncate border-t border-red-200 pt-1"><i class="fas fa-user mr-1"></i>${room.TenKhachHang}</div>`; }
+                        else if (room.TrangThai === 'Đã đặt') { statusClass = 'bg-blue-50 border-l-4 border-blue-500 shadow-sm'; statusText = '<span class="text-blue-600 font-bold text-xs"><i class="fas fa-circle text-[8px] mr-1"></i>Đã đặt</span>'; if (room.TenKhachHang) guestInfo = `<div class="text-xs text-blue-700 font-medium mt-1 truncate border-t border-blue-200 pt-1"><i class="fas fa-user-clock mr-1"></i>${room.TenKhachHang}</div>`; }
+                        const giaTien = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(room.GiaPhong);
+                        fullHtml += `<div class="relative p-4 rounded-xl shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between min-h-[140px] group ${statusClass} cursor-pointer"><div><div class="flex justify-between items-start"><h4 class="text-lg font-bold text-gray-800">${room.TenPhong}</h4><div class="text-2xl opacity-10 group-hover:opacity-30 transition"><i class="fas ${groupIcon}"></i></div></div><div class="text-sm font-semibold text-gray-500">${giaTien}</div>${guestInfo}</div><div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100/50"><div>${statusText}</div><button onclick="openRoomDetail('${room.MaPhong}')" class="text-xs bg-white border border-gray-300 px-2 py-1 rounded hover:bg-blue-600 hover:text-white transition shadow-sm z-10 relative">Chi tiết</button></div></div>`;
+                    });
+                    fullHtml += `</div></div><hr class="border-gray-200 my-6">`;
+                });
+                container.innerHTML = fullHtml;
+            } catch (e) { console.error("❌ Lỗi:", e); container.innerHTML = '<div class="text-red-500 text-center">Lỗi hiển thị dữ liệu!</div>'; }
+        }
+
+        async function openRoomDetail(roomCode) {
+            const modal = document.getElementById('room-detail-modal');
+            const actionDiv = document.getElementById('modal-actions');
+            document.getElementById('modal-room-name').innerText = "Đang tải...";
+            document.getElementById('modal-status').innerText = "...";
+            document.getElementById('modal-guest-name').innerText = "...";
+            actionDiv.innerHTML = ""; modal.classList.remove('hidden'); modal.classList.add('flex');
+            try {
+                const resRoom = await fetch(`http://localhost:3000/api/phong`);
+                const allRooms = await resRoom.json();
+                const currentRoom = allRooms.find(r => r.MaPhong === roomCode);
+                if (!currentRoom) { alert("❌ Không tìm thấy phòng!"); closeRoomDetail(); return; }
+                const trangThai = currentRoom.TrangThai || 'Trống';
+                document.getElementById('modal-room-name').innerText = currentRoom.TenPhong;
+                document.getElementById('modal-status').innerText = trangThai;
+                if (trangThai === 'Bảo trì') { document.getElementById('modal-status').className = "bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-bold mt-2 inline-block"; document.getElementById('modal-status').innerText = "Đang bảo trì"; document.getElementById('modal-guest-name').innerText = "Phòng đang dọn dẹp"; actionDiv.innerHTML = `<button onclick="handleCleanRoom('${roomCode}')" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-bold shadow-md flex items-center"><i class="fas fa-broom mr-2"></i> DỌN PHÒNG XONG</button>`; return; }
+                const res = await fetch(`http://localhost:3000/api/dat-phong/chi-tiet/${roomCode}`);
+                if (!res.ok) { document.getElementById('modal-status').innerText = "Phòng Trống"; document.getElementById('modal-status').className = "bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-bold mt-2 inline-block"; document.getElementById('modal-guest-name').innerText = "Chưa có khách"; return; }
+                const data = await res.json();
+                document.getElementById('modal-guest-name').innerText = data.HoTen || "Khách vãng lai";
+                document.getElementById('modal-guest-cccd').innerText = data.CCCD || "Chưa cập nhật";
+                document.getElementById('modal-guest-contact').innerText = data.Email || data.SoDienThoai || "Không có";
+                let rawDOB = data.NamSinh || data.DOB; let birthYear = 0, currentYear = new Date().getFullYear();
+                if (rawDOB) { let strDOB = String(rawDOB); const yearMatch = strDOB.match(/(19|20)\d{2}/); if (yearMatch) birthYear = parseInt(yearMatch[0]); else if (!isNaN(rawDOB)) birthYear = parseInt(rawDOB); }
+                if (birthYear > 1900 && birthYear <= currentYear) document.getElementById('modal-guest-age').innerText = `${currentYear - birthYear} tuổi (${birthYear})`; else document.getElementById('modal-guest-age').innerText = `${rawDOB || 'Trống'}`;
+                const formatDate = (d) => d ? new Date(d).toLocaleDateString('vi-VN') : '...';
+                document.getElementById('modal-checkin').innerText = formatDate(data.CheckIn);
+                document.getElementById('modal-checkout').innerText = formatDate(data.CheckOut);
+                document.getElementById('modal-guests').innerText = (data.SoLuongKhach || 0) + " người";
+                let total = data.TongTien || 0; if (typeof total === 'string') total = parseFloat(total.replace(/[^0-9]/g, ''));
+                document.getElementById('modal-price').innerText = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(total);
+                if (trangThai === 'Đã đặt') { document.getElementById('modal-status').className = "bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-bold mt-2 inline-block"; actionDiv.innerHTML = `<button onclick="handleCheckIn('${roomCode}')" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-bold shadow-md flex items-center"><i class="fas fa-check-circle mr-2"></i> CHECK-IN</button>`; } else if (trangThai === 'Đang ở') { document.getElementById('modal-status').className = "bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-bold mt-2 inline-block"; actionDiv.innerHTML = `<button onclick="handleCheckout('${roomCode}')" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold shadow-md flex items-center"><i class="fas fa-money-bill-wave mr-2"></i> THANH TOÁN</button>`; }
+            } catch (e) { console.error("❌ Lỗi modal:", e); }
+        }
+
+        function closeRoomDetail() { document.getElementById('room-detail-modal').classList.add('hidden'); document.getElementById('room-detail-modal').classList.remove('flex'); }
+        async function handleCheckIn(roomCode) { 
+    if(!confirm("✅ Xác nhận khách đã đến và Check-in?")) return; 
+    
+    try { 
+        console.log(`🔑 [CHECK-IN] Đang xử lý phòng: ${roomCode}`);
+        
+        const res = await fetch(`http://localhost:3000/api/check-in/${roomCode}`, { 
+            method: 'PUT' 
+        }); 
+        
+        const data = await res.json(); 
+        
+        if (data.success) {
+            alert("✅ " + data.message); 
+            closeRoomDetail(); // Đóng modal
+            
+            // ⭐ QUAN TRỌNG: Làm mới danh sách phòng
+            setTimeout(() => {
+                generateRooms(); // Tải lại sơ đồ phòng
+                loadDashboardStats(); // Cập nhật số liệu thống kê
+            }, 500);
+        } else {
+            alert("⚠️ " + (data.message || "Có lỗi xảy ra!"));
+        }
+        
+    } catch(e) { 
+        console.error("❌ Lỗi Check-in:", e);
+        alert("❌ Lỗi kết nối server!"); 
+    } 
+}
+        async function handleCheckout(roomCode) { if(!confirm("⚠️ Xác nhận THANH TOÁN và chuyển phòng sang BẢO TRÌ?")) return; try { const res = await fetch(`http://localhost:3000/api/thanh-toan/${roomCode}`, { method: 'PUT' }); const data = await res.json(); if (data.success) { alert("✅ " + data.message); closeRoomDetail(); setTimeout(() => generateRooms(), 300); } else { alert("⚠️ " + data.message); } } catch(e) { alert("❌ Lỗi kết nối server!"); } }
+        async function handleCleanRoom(roomCode) { if(!confirm("✅ Xác nhận đã dọn phòng xong và sẵn sàng đón khách?")) return; try { const res = await fetch(`http://localhost:3000/api/don-phong/${roomCode}`, { method: 'PUT' }); const data = await res.json(); alert(data.message); closeRoomDetail(); setTimeout(() => generateRooms(), 300); } catch(e) { alert("❌ Lỗi kết nối!"); } }
+        window.handleCleanRoom = handleCleanRoom;
+
+        function openSecurityModal(action, id) { pendingAction = action; pendingId = id; document.getElementById('securityPassInput').value = ''; document.getElementById('securityError').classList.add('hidden'); document.getElementById('security-modal').classList.remove('hidden'); document.getElementById('security-modal').classList.add('flex'); setTimeout(() => document.getElementById('securityPassInput').focus(), 100); }
+        function closeSecurityModal() { document.getElementById('security-modal').classList.add('hidden'); document.getElementById('security-modal').classList.remove('flex'); }
+        function handleDelete(id) { openSecurityModal('delete', id); }
+        function handleEdit(id) { openSecurityModal('edit', id); }
+
+        async function confirmSecurityAction() {
+            const pass = document.getElementById('securityPassInput').value;
+            if (pass !== "hellomyfen") { document.getElementById('securityError').classList.remove('hidden'); return; }
+            closeSecurityModal();
+            if (pendingAction === 'delete') {
+                if (!confirm("Hành động này không thể hoàn tác. Bạn chắc chắn muốn xóa?")) return;
+                try { const res = await fetch(`http://localhost:3000/api/nhan-vien/${pendingId}`, { method: 'DELETE' }); const data = await res.json(); alert(data.message); loadStaff(); } catch (e) { alert("Lỗi khi xóa nhân viên!"); }
+            } else if (pendingAction === 'view_pass') {
+                const spanPass = document.getElementById(`pass-txt-${pendingId}`);
+                if(spanPass) { spanPass.innerText = spanPass.getAttribute('data-realpass'); spanPass.classList.remove('tracking-widest', 'text-gray-600'); spanPass.classList.add('text-red-600', 'font-bold'); }
+            } else if (pendingAction === 'add_nv') {
+                openAddStaffModal();
+            } else if (pendingAction === 'edit') {
+                openEditStaffForm(pendingId);
+            }
+        }
+
+        async function openEditStaffForm(staffId) {
+            try {
+                const res = await fetch('http://localhost:3000/api/nhan-vien');
+                const allStaff = await res.json();
+                const staff = allStaff.find(s => s.MaNV == staffId);
+                if (!staff) { alert("Không tìm thấy nhân viên!"); return; }
+                document.getElementById('edit-id').value = staff.MaNV;
+                document.getElementById('edit-name').value = staff.HoTen;
+                document.getElementById('edit-username').value = staff.TenDangNhap;
+                document.getElementById('edit-pass').value = staff.MatKhau;
+                document.getElementById('edit-role').value = staff.ChucVu;
+                document.getElementById('edit-phone').value = staff.SoDienThoai;
+                document.getElementById('edit-email').value = staff.Email;
+                const modal = document.getElementById('edit-staff-modal');
+                modal.classList.remove('hidden'); modal.classList.add('flex');
+            } catch (e) { console.error(e); alert("Lỗi tải thông tin!"); }
+        }
+
+        function closeEditModal() { const modal = document.getElementById('edit-staff-modal'); modal.classList.add('hidden'); modal.classList.remove('flex'); }
+
+            async function saveStaffEdit() {
+                const id = document.getElementById('edit-id').value;
+                const newPass = document.getElementById('edit-pass').value;
+                const newRole = document.getElementById('edit-role').value;
+                const newPhone = document.getElementById('edit-phone').value;
+                const newEmail = document.getElementById('edit-email').value;
+                if (!confirm("Bạn có chắc muốn cập nhật thông tin nhân viên này?")) return;
+                try {
+                    const res = await fetch(`http://localhost:3000/api/nhan-vien/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ MatKhau: newPass, ChucVu: newRole, SoDienThoai: newPhone, Email: newEmail }) });
+                    const data = await res.json();
+                    if (data.success || res.ok) { alert("✅ Cập nhật thành công!"); closeEditModal(); loadStaff(); } else { alert("❌ Lỗi: " + (data.message || "Không thể cập nhật")); }
+                } catch (e) { console.error(e); alert("❌ Lỗi kết nối Server!"); }
+        }
+
+        function openSettings() { document.getElementById('settings-modal').classList.remove('hidden'); document.getElementById('settings-modal').classList.add('flex'); }
+        function closeSettings() { document.getElementById('settings-modal').classList.add('hidden'); document.getElementById('settings-modal').classList.remove('flex'); }
+        function logout() { if(confirm('Bạn muốn đăng xuất?')) window.location.href = 'Trangchu.html'; }
+
+        async function loadPaymentData() { try { const response = await fetch('http://localhost:3000/api/quan-ly-thanh-toan'); allPayments = await response.json(); renderTable(); } catch (error) { console.error("Lỗi tải dữ liệu:", error); } }
+        
+        function switchPaymentTab(tab) {
+            currentTab = tab;
+            const btnUnpaid = document.getElementById('btnChuaThanhToan');
+            const btnPaid = document.getElementById('btnDaThanhToan');
+            if (tab === 'unpaid') {
+                btnUnpaid.className = 'btn btn-primary'; btnUnpaid.classList.remove('btn-outline-primary');
+                btnPaid.className = 'btn btn-outline-primary'; btnPaid.classList.remove('btn-primary');
+            } else {
+                btnUnpaid.className = 'btn btn-outline-primary'; btnUnpaid.classList.remove('btn-primary');
+                btnPaid.className = 'btn btn-primary'; btnPaid.classList.remove('btn-outline-primary');
+            }
+            renderTable();
+        }
+
+        function renderTable() {
+            const tableBody = document.getElementById('paymentTableBody'); 
+            const searchInput = document.getElementById('searchInput');
+            const searchKeyword = searchInput ? searchInput.value.toLowerCase() : ''; 
+            
+            tableBody.innerHTML = ''; 
+            
+            if (!allPayments || allPayments.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center p-4">Đang tải hoặc không có dữ liệu...</td></tr>';
+                return;
+            }
+
+            const filteredData = allPayments.filter(item => { 
+                let matchTab = (currentTab === 'unpaid') ? (item.TrangThai === 'Đang ở') : (item.TrangThai === 'Đã thanh toán');
+                const tenKhach = item.TenKhachHang ? item.TenKhachHang.toLowerCase() : '';
+                const matchSearch = tenKhach.includes(searchKeyword); 
+                return matchTab && matchSearch; 
+            });
+
+            if (filteredData.length === 0) { 
+                const msg = (currentTab === 'unpaid') ? 'Không có phòng nào đang ở cần thanh toán.' : 'Không có lịch sử thanh toán nào.';
+                tableBody.innerHTML = `<tr><td colspan="7" class="text-center p-4 text-gray-500 italic">${msg}</td></tr>`; 
+                return; 
+            }
+
+            filteredData.forEach(item => { 
+                const dateStr = new Date(item.NgayDat).toLocaleDateString('vi-VN'); 
+                const moneyStr = new Intl.NumberFormat('vi-VN').format(item.TongTien);
+
+                let badgeClass = 'bg-secondary'; 
+                let actionButton = '';
+
+                if (item.TrangThai === 'Đã thanh toán') {
+                    badgeClass = 'bg-success';
+                    actionButton = `<button class="text-gray-400 border border-gray-300 px-3 py-1 rounded text-sm cursor-not-allowed" disabled>Đã xong</button>`;
+                } else {
+                    badgeClass = (item.TrangThai === 'Đang ở') ? 'bg-warning' : 'bg-primary';
+                    actionButton = `
+                        <button onclick="handleCheckout('${item.RoomCode}')" 
+                                class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 font-bold shadow-sm text-sm transition flex items-center">
+                            <i class="fas fa-money-bill-wave mr-1"></i> Thanh toán
+                        </button>
+                    `;
+                }
+
+                tableBody.innerHTML += `
+                    <tr class="border-b hover:bg-gray-50 transition">
+                        <td class="p-3 text-sm text-gray-500">#${item.MaHD}</td>
+                        <td class="p-3 font-bold text-gray-800">${item.TenKhachHang || 'Khách vãng lai'}</td>
+                        <td class="p-3">${item.TenPhong}</td>
+                        <td class="p-3 text-red-600 font-bold text-lg">${moneyStr} ₫</td>
+                        <td class="p-3 text-sm text-gray-600">${dateStr}</td>
+                        <td class="p-3"><span class="badge ${badgeClass}">${item.TrangThai}</span></td>
+                        <td class="p-3">${actionButton}</td>
+                    </tr>
+                `; 
+            });
+        }
+
+        async function loadServiceBookings() {
+            const tbody = document.getElementById('services-table-body'); 
+            tbody.innerHTML = '<tr><td colspan="8" class="p-4 text-center"><i class="fas fa-spinner fa-spin"></i> Đang tải...</td></tr>';
+            try {
+                const res = await fetch('http://localhost:3000/api/quan-ly-dich-vu'); 
+                const allData = await res.json();
+                
+                const filteredData = allData.filter(item => { 
+                    if (currentServiceTab === 'unpaid') return item.Status !== 'Đã thanh toán' && item.Status !== 'Đã hủy'; 
+                    else return item.Status === 'Đã thanh toán'; 
+                });
+
+                if (filteredData.length === 0) { 
+                    tbody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-gray-500">Không có dữ liệu phù hợp.</td></tr>'; 
+                    return; 
+                }
+
+                let html = '';
+                filteredData.forEach(item => {
+                    const ngayDat = item.OrderDate ? new Date(item.OrderDate).toLocaleString('vi-VN') : '';
+                    const ngayDung = item.ServiceDate ? new Date(item.ServiceDate).toLocaleDateString('vi-VN') : '';
+                    
+                    // --- PHẦN SỬA LỖI QUAN TRỌNG: LÀM SẠCH TIỀN ---
+                    let rawPrice = item.TotalPrice;
+                    let cleanPrice = 0;
+                    if(typeof rawPrice === 'number') cleanPrice = rawPrice;
+                    else if (typeof rawPrice === 'string') cleanPrice = parseInt(rawPrice.replace(/[^0-9]/g, '')) || 0;
+                    
+                    const tongTien = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(cleanPrice);
+                    // ------------------------------------------------
+
+                    let statusHtml = '', actionHtml = '';
+                    if (item.Status === 'Chờ xác nhận' || item.Status === 'Đã đặt') { 
+                        statusHtml = `<button onclick="updateServiceStatus(${item.ID}, 'Đang sử dụng')" class="bg-yellow-100 text-yellow-700 border border-yellow-300 px-3 py-1 rounded-full text-xs font-bold hover:bg-yellow-200 transition shadow-sm flex items-center gap-1"><i class="fas fa-clock"></i> Đã đặt <i class="fas fa-arrow-right ml-1 text-gray-400"></i></button>`; 
+                    } else if (item.Status === 'Đang sử dụng') { 
+                        statusHtml = `<span class="bg-green-100 text-green-700 border border-green-300 px-3 py-1 rounded-full text-xs font-bold shadow-sm flex items-center gap-1 w-fit"><i class="fas fa-check-circle"></i> Đang sử dụng</span>`; 
+                        actionHtml = `<button onclick="payService(${item.ID})" class="ml-2 bg-blue-600 text-white font-bold text-xs px-3 py-1 rounded shadow hover:bg-blue-700 transition"><i class="fas fa-money-bill-wave"></i> Thanh toán</button>`; 
+                    } else if (item.Status === 'Đã thanh toán') { 
+                        statusHtml = `<span class="bg-gray-200 text-gray-600 px-3 py-1 rounded-full text-xs font-bold">Đã thanh toán</span>`; 
+                    } else { 
+                        statusHtml = `<span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs">${item.Status}</span>`; 
+                    }
+
+                    html += `<tr class="border-b hover:bg-gray-50 transition"><td class="p-4 text-gray-500 text-xs">${ngayDat}</td><td class="p-4 font-bold text-gray-800">${item.CustomerName}</td><td class="p-4">${item.CustomerPhone}</td><td class="p-4 font-semibold text-blue-600">${item.ServiceName} <span class="text-xs text-gray-400 block">${item.Note || ''}</span></td><td class="p-4 text-center font-bold">${item.Quantity}</td><td class="p-4 text-right font-bold text-red-600">${tongTien}</td><td class="p-4 text-gray-600">${ngayDung}</td><td class="p-4"><div class="flex items-center">${statusHtml} ${actionHtml}</div></td></tr>`;
+                });
+                tbody.innerHTML = html;
+            } catch (err) { console.error(err); tbody.innerHTML = '<tr><td colspan="8" class="p-4 text-center text-red-500">Lỗi tải dữ liệu!</td></tr>'; }
+        }
+
+        function switchServiceTab(tab) {
+            currentServiceTab = tab; const btnUnpaid = document.getElementById('btnServiceUnpaid'); const btnPaid = document.getElementById('btnServicePaid');
+            if (tab === 'unpaid') { btnUnpaid.className = "px-4 py-2 bg-blue-600 text-white rounded font-bold text-sm shadow transition"; btnPaid.className = "px-4 py-2 bg-white text-blue-600 border border-blue-600 rounded font-bold text-sm hover:bg-blue-50 transition"; }
+            else { btnUnpaid.className = "px-4 py-2 bg-white text-blue-600 border border-blue-600 rounded font-bold text-sm hover:bg-blue-50 transition"; btnPaid.className = "px-4 py-2 bg-blue-600 text-white rounded font-bold text-sm shadow transition"; }
+            loadServiceBookings();
+        }
+
+        async function updateServiceStatus(id, newStatus) { if(!confirm('Khách bắt đầu sử dụng dịch vụ này?')) return; try { const res = await fetch('http://localhost:3000/api/update-service-status', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: id, status: newStatus }) }); const data = await res.json(); if(data.success) loadServiceBookings(); else alert('Lỗi cập nhật'); } catch(e) { alert('Lỗi kết nối'); } }
+        async function payService(id) { if(!confirm('Xác nhận khách đã thanh toán tiền dịch vụ này?')) return; try { const res = await fetch('http://localhost:3000/api/update-service-status', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: id, status: 'Đã thanh toán' }) }); const data = await res.json(); if(data.success) { alert('Thanh toán thành công!'); loadServiceBookings(); } else alert('Lỗi thanh toán'); } catch(e) { alert('Lỗi kết nối'); } }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('dashboard');
+            const form = document.getElementById('addStaffForm');
+            if (form) {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const errorMsg = document.getElementById('addStaffError'); errorMsg.textContent = '';
+                    const submitBtn = e.target.querySelector('button[type="submit"]'); submitBtn.disabled = true; submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Đang xử lý...';
+                    const payload = { hoTen: document.getElementById('staffName').value, tenDangNhap: document.getElementById('staffUsername').value, matKhau: document.getElementById('staffPassword').value, chucVu: document.getElementById('staffRole').value, soDienThoai: document.getElementById('staffPhone').value || null, email: document.getElementById('staffEmail').value || null, queQuan: document.getElementById('staffHometown').value };
+                    try { const res = await fetch('http://localhost:3000/api/them-nhan-vien', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); const data = await res.json(); if (res.ok) { alert('✅ ' + data.message); closeAddStaffModal(); loadStaff(); } else { errorMsg.textContent = data.message || 'Lỗi thêm nhân viên!'; } } catch (err) { errorMsg.textContent = 'Lỗi kết nối server!'; } finally { submitBtn.disabled = false; submitBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Thêm Nhân Viên'; }
+                });
+            }
+            const securityPassInput = document.getElementById('securityPassInput');
+            if (securityPassInput) { securityPassInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') { e.preventDefault(); confirmSecurityAction(); } }); }
+        });
+
+        function openAddStaffModal() { document.getElementById('add-staff-modal').classList.remove('hidden'); document.getElementById('add-staff-modal').classList.add('flex'); document.getElementById('addStaffForm').reset(); document.getElementById('addStaffError').textContent = ''; }
+        function closeAddStaffModal() { document.getElementById('add-staff-modal').classList.add('hidden'); document.getElementById('add-staff-modal').classList.remove('flex'); }
+        function togglePasswordVisibility(inputId) { const input = document.getElementById(inputId); const icon = document.getElementById('icon-' + inputId); if (input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; } else { input.type = 'password'; icon.className = 'fas fa-eye'; } }
+
+        async function loadRevenueReport() {
+            const tbody = document.getElementById('revenue-table-body');
+            tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center"><i class="fas fa-spinner fa-spin"></i> Đang tính toán...</td></tr>';
+            try {
+                const res = await fetch('http://localhost:3000/api/doanh-thu-thang');
+                const data = await res.json();
+                const formatMoney = (num) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(num);
+                const html = `
+                    <tr class="border-b hover:bg-gray-50 text-lg">
+                        <td class="p-4">Tháng ${data.thang}/${data.nam}</td>
+                        <td class="p-4 text-blue-700 font-bold">${formatMoney(data.tienDichVu)}</td>
+                        <td class="p-4 text-green-700 font-bold">${formatMoney(data.tienPhong)}</td>
+                        <td class="p-4 text-red-600 font-bold text-xl text-right">${formatMoney(data.tongCong)}</td>
+                    </tr>
+                `;
+                tbody.innerHTML = html;
+            } catch (e) {
+                console.error(e);
+                tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-red-500">Lỗi kết nối server!</td></tr>';
+            }
+        }
+
+        function maskCCCD(cccd) {
+            if (!cccd || cccd.length < 4) return 'Chưa cập nhật';
+            return cccd.substring(0, cccd.length - 4) + '****';
+        }
+
+        let allCustomerData = [];
+
+        async function loadCustomers() {
+            const tbody = document.querySelector('#customers tbody');
+            tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center"><i class="fas fa-spinner fa-spin"></i> Đang tải dữ liệu...</td></tr>';
+
+            try {
+                const res = await fetch('http://localhost:3000/api/khach-hang');
+                const data = await res.json();
+                allCustomerData = data;
+                renderCustomerTable(allCustomerData);
+            } catch (e) {
+                console.error(e);
+                tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-red-500">Lỗi kết nối Server!</td></tr>';
+            }
+        }
+
+        function filterCustomers() {
+            const keyword = document.getElementById('searchCustomerInput').value.toLowerCase().trim();
+            const filteredData = allCustomerData.filter(kh => {
+                const ten = (kh.HoTen || '').toLowerCase();
+                const sdt = (kh.SoDienThoai || '').toLowerCase();
+                const cccd = (kh.CCCD || '').toLowerCase();
+                return ten.includes(keyword) || sdt.includes(keyword) || cccd.includes(keyword);
+            });
+            renderCustomerTable(filteredData);
+        }
+
+        function renderCustomerTable(data) {
+            const tbody = document.querySelector('#customers tbody');
+            let html = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400 italic">Không tìm thấy khách hàng phù hợp.</td></tr>';
+                return;
+            }
+
+            data.forEach(kh => {
+                const chiTieu = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(kh.ChiTieu);
+                const cccdDisplay = kh.CCCD && kh.CCCD.length > 5 
+                    ? `<span class="font-mono text-blue-700 font-bold tracking-wider">${kh.CCCD}</span>` 
+                    : '<span class="text-gray-400 text-xs italic">Chưa cập nhật</span>';
+
+                let actionDisplay = '<span class="text-gray-400 italic text-xs">Chưa có lịch sử</span>';
+                if (kh.Phong && kh.Phong !== 'Chưa đặt') {
+                    actionDisplay = `
+                        <button onclick="openCustomerDetail('${kh.ID}', '${kh.HoTen}')" 
+                                class="text-blue-600 hover:text-blue-800 text-sm font-bold bg-blue-50 px-3 py-1 rounded-full border border-blue-200 hover:bg-blue-100 transition flex items-center w-fit">
+                            <i class="fas fa-eye mr-2"></i> Xem lịch sử
+                        </button>
+                    `;
+                }
+
+                html += `
+                    <tr class="border-b hover:bg-gray-50 transition align-middle">
+                        <td class="p-3 font-medium text-gray-800">${kh.HoTen}</td>
+                        <td class="p-3">${kh.SoDienThoai || '---'}</td>
+                        <td class="p-3">${cccdDisplay}</td>
+                        <td class="p-3">${actionDisplay}</td>
+                        <td class="p-3 font-bold text-green-700">${chiTieu}</td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+        }
+
+        async function openCustomerDetail(userId, userName) {
+            const modal = document.getElementById('customer-detail-modal');
+            const nameSpan = document.getElementById('detail-customer-name');
+            const roomBody = document.getElementById('detail-room-list');
+            const serviceBody = document.getElementById('detail-service-list');
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            nameSpan.innerText = userName;
+            roomBody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-gray-500"><i class="fas fa-spinner fa-spin"></i> Đang tải lịch sử phòng...</td></tr>';
+            serviceBody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-gray-500"><i class="fas fa-spinner fa-spin"></i> Đang tải lịch sử dịch vụ...</td></tr>';
+
+            try {
+                const res = await fetch(`http://localhost:3000/api/khach-hang/chi-tiet/${userId}`);
+                const data = await res.json();
+
+                const fmtMoney = (raw) => {
+                    let str = String(raw).replace(/[^0-9]/g, '');
+                    return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(parseInt(str) || 0);
+                };
+                const fmtDate = (d) => d ? new Date(d).toLocaleString('vi-VN') : '';
+
+                if (data.rooms && data.rooms.length > 0) {
+                    roomBody.innerHTML = data.rooms.map(r => `
+                        <tr class="hover:bg-green-50/50 transition">
+                            <td class="p-3 font-bold text-gray-700">${r.RoomName}</td>
+                            <td class="p-3 text-sm text-gray-600">${fmtDate(r.CheckIn)}</td>
+                            <td class="p-3 text-sm text-gray-600">${fmtDate(r.CheckOut)}</td>
+                            <td class="p-3 text-right font-bold text-green-700">${fmtMoney(r.TotalPrice)}</td>
+                            <td class="p-3 text-center">
+                                <span class="px-2 py-1 rounded text-xs font-bold ${r.TrangThai === 'Đã thanh toán' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">
+                                    ${r.TrangThai}
+                                </span>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    roomBody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-gray-400 italic bg-gray-50">Khách chưa từng đặt phòng nào.</td></tr>';
+                }
+
+                if (data.services && data.services.length > 0) {
+                    serviceBody.innerHTML = data.services.map(s => `
+                        <tr class="hover:bg-blue-50/50 transition">
+                            <td class="p-3 font-medium text-blue-700">${s.ServiceName}</td>
+                            <td class="p-3 text-center font-bold">${s.Quantity}</td>
+                            <td class="p-3 text-sm text-gray-600">${fmtDate(s.OrderDate)}</td>
+                            <td class="p-3 text-right font-bold text-gray-700">${fmtMoney(s.TotalPrice)}</td>
+                            <td class="p-3 text-center">
+                                <span class="px-2 py-1 rounded text-xs font-bold ${s.Status === 'Đã thanh toán' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'}">
+                                    ${s.Status}
+                                </span>
+                            </td>
+                        </tr>
+                    `).join('');
+                } else {
+                    serviceBody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-gray-400 italic bg-gray-50">Khách chưa sử dụng dịch vụ nào.</td></tr>';
+                }
+
+            } catch (e) {
+                console.error(e);
+                alert("Lỗi tải chi tiết!");
+            }
+        }
+
+        function closeCustomerDetail() {
+            const modal = document.getElementById('customer-detail-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    </script>
+</body>
+</html>
